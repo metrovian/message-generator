@@ -29,8 +29,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TCP.h">
+    <ClInclude Include="TCPServer.h">
       <Filter>Communication Protocol\Transmission Control Protocol\Base</Filter>
     </ClInclude>
+    <ClInclude Include="TCPClient.h">
+      <Filter>Communication Protocol\Transmission Control Protocol\Base</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
