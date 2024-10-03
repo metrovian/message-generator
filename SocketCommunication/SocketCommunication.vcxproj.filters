@@ -35,6 +35,9 @@
     <ClInclude Include="TCPClient.h">
       <Filter>Communication Protocol\Transmission Control Protocol\Base</Filter>
     </ClInclude>
+    <ClInclude Include="Predefined.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

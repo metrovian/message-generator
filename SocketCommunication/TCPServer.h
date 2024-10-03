@@ -25,11 +25,15 @@ public: /* connection */
 	bool open();
 	bool close();
 
+public: /* send */
+	bool sendSimpleMessage(std::string _msg, uint64_t _idx);
+	bool sendSimpleMessage(std::string _msg);
+
 private: /* thread */
 	bool startAcceptThread();
 	bool startReceiveThread(uint64_t _idx);
 	bool stopThread();
 
 protected: /* virtual */
-	virtual void processReceivedMessage(std::string _msg);
+	virtual void processReceivedMessage(std::string _msg, uint64_t _idx);
 };
