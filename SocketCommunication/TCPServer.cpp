@@ -52,6 +52,8 @@ bool TCPServer::open()
 
 bool TCPServer::close()
 {
+    stopThread();
+
     for (uint64_t i = client.size(); i > 0; --i)
     {
         closesocket(client[i - 1]);

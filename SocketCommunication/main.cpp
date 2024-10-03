@@ -1,9 +1,10 @@
 #include "TCPServer.h"
+#include "TCPClient.h"
 
 int main()
 {
-	TCPServer t;
-	t.open();
+	TCPClient t;
+	t.connect();
 
 	while (1)
 	{
