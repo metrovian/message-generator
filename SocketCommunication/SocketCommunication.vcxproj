@@ -130,6 +130,7 @@
     <ClInclude Include="Predefined.h" />
     <ClInclude Include="TCPClient.h" />
     <ClInclude Include="TCPServer.h" />
+    <ClInclude Include="UDP.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

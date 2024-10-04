@@ -41,6 +41,9 @@
     <ClInclude Include="Predefined.h">
       <Filter>Data Predefined</Filter>
     </ClInclude>
+    <ClInclude Include="UDP.h">
+      <Filter>Data Protocol\User Datagram Protocol\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
