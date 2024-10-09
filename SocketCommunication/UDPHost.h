@@ -7,6 +7,7 @@
 #include <vector>
 #include <thread>
 #include <iostream>
+#include <set>
 
 class UDPHost
 {
@@ -14,7 +15,7 @@ protected: /* socket */
 	SOCKET host;
 
 protected: /* flag */
-	bool flag = false;
+	std::set<uint16_t> flag;
 
 public: /* constructor */
 	UDPHost();
@@ -23,10 +24,11 @@ public: /* constructor */
 public: /* send */
 	bool sendSimpleMessage(std::string _msg, std::string _ip, uint16_t _port);
 
-private: /* thread */
-	bool startReceiveThread();
+public: /* receive */
+	bool startReceiveThread(uint16_t _port);
+	bool stopThread(uint16_t _port);
 	bool stopThread();
 
 protected: /* virtual */
-	virtual void processReceivedMessage(std::string _msg);
+	virtual void processReceivedMessage(std::string _msg, uint16_t _port);
 };

@@ -5,6 +5,7 @@
 int main()
 {
 	UDPHost t;
+	t.startReceiveThread(8080);
 
 	while (1)
 	{

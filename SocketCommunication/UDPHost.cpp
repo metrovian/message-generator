@@ -21,8 +21,6 @@ UDPHost::UDPHost()
 
         return;
     }
-
-    startReceiveThread();
 }
 
 UDPHost::~UDPHost()
@@ -53,10 +51,10 @@ bool UDPHost::sendSimpleMessage(std::string _msg, std::string _ip, uint16_t _por
     return true;
 }
 
-bool UDPHost::startReceiveThread()
+bool UDPHost::startReceiveThread(uint16_t _port)
 {
-    if (flag) return false;
-    flag = true;
+    if (flag.find(_port) != flag.end()) return false;
+    flag.insert(_port);
 
     auto func = [&]()
         {
@@ -64,7 +62,7 @@ bool UDPHost::startReceiveThread()
             int size = sizeof(addr);
 
             addr.sin_family = AF_INET;
-            addr.sin_port = htons(12345);
+            addr.sin_port = htons(_port);
             addr.sin_addr.s_addr = INADDR_ANY;
 
             if (bind(host, (sockaddr*)&addr, sizeof(addr)) == SOCKET_ERROR)
@@ -77,7 +75,7 @@ bool UDPHost::startReceiveThread()
                 return false;
             }
 
-            while (flag)
+            while (flag.find(_port) != flag.end())
             {
                 char msg[BUFFER_SIZE] = { 0, };
                 int ret = recvfrom(host, msg, BUFFER_SIZE, 0, (sockaddr*)&addr, &size);
@@ -89,7 +87,7 @@ bool UDPHost::startReceiveThread()
 
                 else
                 {
-                    processReceivedMessage(std::string(msg));
+                    processReceivedMessage(std::string(msg), _port);
                 }
             }
         };
@@ -100,13 +98,19 @@ bool UDPHost::startReceiveThread()
     return true;
 }
 
-bool UDPHost::stopThread()
+bool UDPHost::stopThread(uint16_t _port)
 {
-    flag = false;
+    flag.erase(_port);
     return true;
 }
 
-void UDPHost::processReceivedMessage(std::string _msg)
+bool UDPHost::stopThread()
 {
-    std::cerr << "[Host] " << _msg << std::endl;
+    flag.clear();
+    return true;
+}
+
+void UDPHost::processReceivedMessage(std::string _msg, uint16_t _port)
+{
+    std::cerr << "[Host : " << _port << "] " << _msg << std::endl;
 }
