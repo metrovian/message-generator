@@ -11,11 +11,12 @@
     <Filter Include="Data Protocol\Universal Asynchronous Receiver Transmitter">
       <UniqueIdentifier>{d8f9b0f0-1cbb-405c-844f-679b91178ecd}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="UART.h">
-      <Filter>Data Protocol\Universal Asynchronous Receiver Transmitter</Filter>
-    </ClInclude>
+    <Filter Include="Data Protocol\Universal Asynchronous Receiver Transmitter\Base">
+      <UniqueIdentifier>{0c610f31-db6e-45f8-bc51-cccf940e58c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data Protocol\Universal Asynchronous Receiver Transmitter\Concrete">
+      <UniqueIdentifier>{a71569cc-b383-4865-b459-acb85223bddd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -24,5 +25,10 @@
     <ClCompile Include="UART.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="UART.h">
+      <Filter>Data Protocol\Universal Asynchronous Receiver Transmitter\Base</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
