@@ -17,6 +17,9 @@
     <Filter Include="Data Protocol\Universal Asynchronous Receiver Transmitter\Concrete">
       <UniqueIdentifier>{a71569cc-b383-4865-b459-acb85223bddd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Data Predefined">
+      <UniqueIdentifier>{ac3383f6-432d-43ae-b937-d81ea9943f24}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -29,6 +32,9 @@
   <ItemGroup>
     <ClInclude Include="UART.h">
       <Filter>Data Protocol\Universal Asynchronous Receiver Transmitter\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Predefined.h">
+      <Filter>Data Predefined</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Predefined.h" />
     <ClInclude Include="UART.h" />
   </ItemGroup>
   <ItemGroup>

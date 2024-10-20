@@ -1,4 +1,5 @@
 #include "UART.h"
+#include "Predefined.h"
 
 bool UART::open()
 {
@@ -45,13 +46,6 @@ bool UART::open()
         return false;
     }
 
-    COMMTIMEOUTS timeouts = { 0 };
-    timeouts.ReadIntervalTimeout = 50;
-    timeouts.ReadTotalTimeoutConstant = 50;
-    timeouts.ReadTotalTimeoutMultiplier = 10;
-    timeouts.WriteTotalTimeoutConstant = 50;
-    timeouts.WriteTotalTimeoutMultiplier = 10;
-
     if (!SetCommTimeouts(com, &timeouts)) 
     {
         std::cerr << "[" << port << "] Timeout Configuration Failed" << std::endl;
@@ -60,7 +54,7 @@ bool UART::open()
         return false;
     }
 
-    return true;
+    return startReceiveThread();
 }
 
 bool UART::close()
@@ -76,6 +70,63 @@ bool UART::close()
     return false;
 }
 
+bool UART::sendSimpleMessage(std::string _msg)
+{
+    DWORD bytesWritten;
+
+    if (!WriteFile(com, _msg.c_str(), _msg.length(), &bytesWritten, NULL)) 
+    {
+        std::cerr << "[" << port << "] Send Failed" << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
+bool UART::startReceiveThread()
+{
+    if (flag) return false;
+    flag = true;
+
+    auto func = [&]()
+        {
+            while (flag)
+            {
+                char msg[BUFFER_SIZE];
+                DWORD bytes;
+
+                if (ReadFile(com, msg, sizeof(msg), &bytes, NULL)) 
+                {
+                    if (bytes > 0)
+                    {
+                        processReceivedMessage(std::string(msg, bytes));
+                    }
+                }
+
+                else 
+                {
+                    std::cerr << "[" << port << "] Receive Failed" << std::endl;
+                }
+            }
+        };
+
+    std::thread trd = std::thread(func);
+    trd.detach();
+
+    return true;
+}
+
+bool UART::stopThread()
+{
+    flag = false;
+    return true;
+}
+
+void UART::processReceivedMessage(std::string _msg)
+{
+    std::cerr << "[" << port << "] " << _msg << std::endl;
+}
+
 std::vector<std::string> UART::searchPorts()
 {
     std::vector<std::string> ret;
@@ -87,7 +138,7 @@ std::vector<std::string> UART::searchPorts()
 
         if (hport != INVALID_HANDLE_VALUE)
         {
-            ret.push_back("COM" + std::to_string(i));
+            ret.push_back("COM" + std::to_string(i + 1));
             CloseHandle(hport);
         }
     }
