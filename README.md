@@ -3,6 +3,7 @@ Personal communication software to understand protocols in depth.
 <br/></br>
 ## Serial Communication ##
 - Universal asynchronous receiver transmitter ( UART )
+- Universal serial bus ( USB )
 - Inter-intergrated circuit ( I2C )
 - Serial peripheral interconnect ( SPI )
 <br/></br>
