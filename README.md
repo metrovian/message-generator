@@ -4,6 +4,7 @@ Personal communication software to understand protocols in depth.
 ## Serial Communication ##
 - Universal asynchronous receiver transmitter ( UART )
 - Universal serial bus ( USB )
+- Modbus remote terminal unit ( RTU )
 <br/></br>
 ## Socket Communication ##
 - Transmission control protocol ( TCP )
