@@ -3,10 +3,11 @@
 
 class ModbusRTU : public UART
 {
-protected: /* config */
-	DWORD baud = 9600;
+public: /* constructor */
+	ModbusRTU();
+	~ModbusRTU() = default;
 
-protected: /* check */
+protected: /* parts */
 	WORD calcCRC(std::vector<BYTE> _frame);
 
 public: /* send */

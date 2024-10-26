@@ -1,5 +1,12 @@
 #include "ModbusRTU.h"
 
+ModbusRTU::ModbusRTU()
+{
+    baud = 9600;
+    par = 0;
+    stop = 0;
+}
+
 WORD ModbusRTU::calcCRC(std::vector<BYTE> _frame)
 {
     WORD ret = 0xFFFF;
