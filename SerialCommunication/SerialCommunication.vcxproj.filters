@@ -28,6 +28,9 @@
     <ClCompile Include="UART.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ModbusRTU.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UART.h">
@@ -35,6 +38,9 @@
     </ClInclude>
     <ClInclude Include="Predefined.h">
       <Filter>Data Predefined</Filter>
+    </ClInclude>
+    <ClInclude Include="ModbusRTU.h">
+      <Filter>Data Protocol\Universal Asynchronous Receiver Transmitter\Concrete</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

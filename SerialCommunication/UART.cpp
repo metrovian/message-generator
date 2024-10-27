@@ -72,15 +72,15 @@ bool UART::close()
 
 bool UART::sendSimpleMessage(std::string _msg)
 {
-    DWORD bytesWritten;
+    DWORD bytes;
 
-    if (!WriteFile(com, _msg.c_str(), _msg.length(), &bytesWritten, NULL)) 
+    if (!WriteFile(com, _msg.c_str(), _msg.length(), &bytes, NULL)) 
     {
         std::cerr << "[" << port << "] Send Failed" << std::endl;
         return false;
     }
 
-    return true;
+    return (bytes == _msg.length());
 }
 
 bool UART::startReceiveThread()

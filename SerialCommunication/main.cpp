@@ -1,22 +1,25 @@
 #include "UART.h"
+#include "ModbusRTU.h"
+#include <windows.h>
 
 int main()
 {
-	std::vector<std::string> set = UART::searchPorts();
-
-	for (auto s : set)
-	{
-		std::cout << s << std::endl;
-	}
-
-	UART com7;
+	ModbusRTU com7;
 	com7.open();
 	
 	while (1)
 	{
-		std::string f;
-		std::cin >> f;
-		com7.sendSimpleMessage(f);
+		com7.sendRequest({ 0x01, 0x06, 0x00, 0x01, 0x00, 0x03 });
+		Sleep(2500);
+
+		com7.sendRequest({ 0x01, 0x03, 0x00, 0x01, 0x00, 0x01 });
+		Sleep(2500);
+
+		com7.sendRequest({ 0x01, 0x06, 0x00, 0x01, 0x00, 0x05 });
+		Sleep(2500);
+
+		com7.sendRequest({ 0x01, 0x03, 0x00, 0x01, 0x00, 0x01 });
+		Sleep(2500);
 	}
 
 	return 0;
