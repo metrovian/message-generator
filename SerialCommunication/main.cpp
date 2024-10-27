@@ -1,5 +1,6 @@
 #include "UART.h"
 #include "ModbusRTU.h"
+#include <windows.h>
 
 int main()
 {
@@ -8,9 +9,17 @@ int main()
 	
 	while (1)
 	{
-		com7.sendRequest({ 0x01, 0x01, 0x01, 0x01 });
-		std::cout << "sent" << std::endl;
-		getchar();
+		com7.sendRequest({ 0x01, 0x06, 0x00, 0x01, 0x00, 0x03 });
+		Sleep(2500);
+
+		com7.sendRequest({ 0x01, 0x03, 0x00, 0x01, 0x00, 0x01 });
+		Sleep(2500);
+
+		com7.sendRequest({ 0x01, 0x06, 0x00, 0x01, 0x00, 0x05 });
+		Sleep(2500);
+
+		com7.sendRequest({ 0x01, 0x03, 0x00, 0x01, 0x00, 0x01 });
+		Sleep(2500);
 	}
 
 	return 0;

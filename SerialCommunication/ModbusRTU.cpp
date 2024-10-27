@@ -37,8 +37,8 @@ bool ModbusRTU::sendRequest(std::vector<BYTE> _frame)
 {
     WORD crc = calcCRC(_frame);
 
-    _frame.push_back(crc >> 8);
     _frame.push_back(crc & 0xFF);
+    _frame.push_back(crc >> 8);
 
     std::string msg;
 
@@ -59,19 +59,20 @@ void ModbusRTU::processReceivedMessage(std::string _msg)
         frame.push_back(static_cast<BYTE>(data));
     }
 
-    WORD crc = frame.back();
+    WORD crc = (frame.back() << 8);
     frame.pop_back();
 
-    crc |= (frame.back() << 8);
+    crc |= frame.back();
     frame.pop_back();
 
     if (crc == calcCRC(frame))
     {
-        std::cerr << "[" << port << "] " << std::hex;
+        std::cerr << "[" << port << "] " << std::uppercase << std::hex;
 
         for (BYTE byte : frame)
         {
-            std::cerr << byte << " ";
+            if (byte < 16) std::cerr << "0x0" << static_cast<uint32_t>(byte) << " ";
+            else std::cerr << "0x" << static_cast<uint32_t>(byte) << " ";
         }
 
         std::cerr << std::dec << std::endl;
