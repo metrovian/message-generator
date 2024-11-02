@@ -1,2 +1,22 @@
 #pragma once
 constexpr int BUFFER_SIZE = 1024;
+
+enum class HSMS_STATE
+{
+	NONE,
+	CONNECTED,
+	SELECTED,
+};
+
+enum class HSMS_SESSION
+{
+	SELECT_REQ,
+	SELECT_RSP,
+	DESELECT_REQ,
+	DESELECT_RSP,
+	LINKTEST_REQ,
+	LINKTEST_RSP,
+	DATA,
+	SEPARATE_REQ,
+	REJECT_REQ,
+};

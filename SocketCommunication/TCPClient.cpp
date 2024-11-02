@@ -24,7 +24,7 @@ bool TCPClient::connect()
 
     sockaddr_in addr;
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(8080);
+    addr.sin_port = htons(port);
     inet_pton(AF_INET, ip.c_str(), &addr.sin_addr);
 
     if (::connect(client, (sockaddr*)&addr, sizeof(addr)) == SOCKET_ERROR)

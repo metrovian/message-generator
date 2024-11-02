@@ -127,12 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="HSMSActive.h" />
+    <ClInclude Include="HSMSPassive.h" />
     <ClInclude Include="Predefined.h" />
     <ClInclude Include="TCPClient.h" />
     <ClInclude Include="TCPServer.h" />
     <ClInclude Include="UDPHost.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="HSMSActive.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TCPClient.cpp" />
     <ClCompile Include="TCPServer.cpp" />

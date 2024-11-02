@@ -44,6 +44,12 @@
     <ClInclude Include="UDPHost.h">
       <Filter>Data Protocol\User Datagram Protocol\Base</Filter>
     </ClInclude>
+    <ClInclude Include="HSMSActive.h">
+      <Filter>Data Protocol\Transmission Control Protocol\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="HSMSPassive.h">
+      <Filter>Data Protocol\Transmission Control Protocol\Concrete</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -56,6 +62,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UDPHost.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HSMSActive.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
