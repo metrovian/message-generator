@@ -27,6 +27,9 @@ bool TCPClient::connect()
     addr.sin_port = htons(port);
     inet_pton(AF_INET, ip.c_str(), &addr.sin_addr);
 
+    u_long mode = 0;
+    ioctlsocket(client, FIONBIO, &mode);
+
     if (::connect(client, (sockaddr*)&addr, sizeof(addr)) == SOCKET_ERROR)
     {
         std::cerr << "[Client] Connection Failed : " << WSAGetLastError() << std::endl;
@@ -38,10 +41,9 @@ bool TCPClient::connect()
 
     else
     {
-        startReceiveThread();
+        std::cerr << "[Server] Connected" << std::endl;
+        return startReceiveThread();
     }
-
-    return true;
 }
 
 bool TCPClient::disconnect()
@@ -64,7 +66,7 @@ bool TCPClient::startReceiveThread()
 {
     if (flag) return false;
     flag = true;
-
+    
     auto func = [&]()
         {
             while (flag)
