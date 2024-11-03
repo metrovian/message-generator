@@ -70,7 +70,7 @@ bool TCPServer::sendSimpleMessage(std::string _msg, uint64_t _idx)
 {
     if (_idx > client.size()) return false;
 
-    send(client[_idx], _msg.c_str(), strlen(_msg.c_str()), 0);
+    send(client[_idx], _msg.c_str(), _msg.length(), 0);
     return true;
 }
 
@@ -145,7 +145,7 @@ bool TCPServer::startReceiveThread(uint64_t _idx)
 
                 else
                 {
-                    processReceivedMessage(std::string(msg), _idx);
+                    processReceivedMessage(std::string(msg, ret), _idx);
                 }
             }
         };

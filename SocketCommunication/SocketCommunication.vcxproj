@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HSMSActive.cpp" />
+    <ClCompile Include="HSMSPassive.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TCPClient.cpp" />
     <ClCompile Include="TCPServer.cpp" />

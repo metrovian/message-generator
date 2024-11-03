@@ -56,7 +56,7 @@ bool TCPClient::disconnect()
 
 bool TCPClient::sendSimpleMessage(std::string _msg)
 {
-    send(client, _msg.c_str(), strlen(_msg.c_str()), 0);
+    send(client, _msg.c_str(), _msg.length(), 0);
     return true;
 }
 
@@ -86,7 +86,7 @@ bool TCPClient::startReceiveThread()
 
                 else
                 {
-                    processReceivedMessage(std::string(msg));
+                    processReceivedMessage(std::string(msg, ret));
                 }
             }
         };

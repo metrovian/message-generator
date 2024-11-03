@@ -1,29 +1,28 @@
-#include "HSMSActive.h"
+#include "HSMSPassive.h"
 
-bool HSMSActive::connect(std::string _ip, uint16_t _port)
+bool HSMSPassive::open(uint16_t _port)
 {
 	if (state != HSMS_STATE::NONE) return false;
 
-	ip = _ip;
 	port = _port;
 
-	bool ret = TCPClient::connect();
+	bool ret = TCPServer::open();
 
 	if (ret) state = HSMS_STATE::CONNECTED;
 	return ret;
 }
 
-bool HSMSActive::disconnect()
+bool HSMSPassive::close()
 {
 	if (state == HSMS_STATE::NONE) return false;
 
-	bool ret = TCPClient::disconnect();
+	bool ret = TCPServer::close();
 
 	if (ret) state = HSMS_STATE::NONE;
 	return ret;
 }
 
-bool HSMSActive::sendRequest(HSMS_SESSION _ses)
+bool HSMSPassive::sendRequest(HSMS_SESSION _ses)
 {
 	if (state == HSMS_STATE::NONE) return false;
 
@@ -31,9 +30,9 @@ bool HSMSActive::sendRequest(HSMS_SESSION _ses)
 	msg.resize(10);
 
 	msg[5] = static_cast<char>(_ses);
-	msg[6] = static_cast<char>(sbyte >> 24);
-	msg[7] = static_cast<char>((sbyte >> 16) & 0xFF);
-	msg[8] = static_cast<char>((sbyte >> 8) & 0xFF);
+	msg[6] = static_cast<char>(sbyte >> 6);
+	msg[7] = static_cast<char>((sbyte >> 4) & 0xFF);
+	msg[8] = static_cast<char>((sbyte >> 2) & 0xFF);
 	msg[9] = static_cast<char>(sbyte & 0xFF);
 
 	pends.insert(++sbyte);
@@ -41,7 +40,7 @@ bool HSMSActive::sendRequest(HSMS_SESSION _ses)
 	return sendSimpleMessage(msg);
 }
 
-bool HSMSActive::sendResponse(HSMS_SESSION _ses, uint32_t _sbyte)
+bool HSMSPassive::sendResponse(HSMS_SESSION _ses, uint32_t _sbyte, uint64_t _idx)
 {
 	if (state == HSMS_STATE::NONE) return false;
 
@@ -49,15 +48,15 @@ bool HSMSActive::sendResponse(HSMS_SESSION _ses, uint32_t _sbyte)
 	msg.resize(10);
 
 	msg[5] = static_cast<char>(_ses);
-	msg[6] = static_cast<char>(_sbyte >> 6);
-	msg[7] = static_cast<char>((_sbyte >> 4) & 0xFF);
-	msg[8] = static_cast<char>((_sbyte >> 2) & 0xFF);
+	msg[6] = static_cast<char>(_sbyte >> 24);
+	msg[7] = static_cast<char>((_sbyte >> 16) & 0xFF);
+	msg[8] = static_cast<char>((_sbyte >> 8) & 0xFF);
 	msg[9] = static_cast<char>(_sbyte & 0xFF);
 
-	return sendSimpleMessage(msg);
+	return sendSimpleMessage(msg, _idx);
 }
 
-void HSMSActive::processReceivedMessage(std::string _msg)
+void HSMSPassive::processReceivedMessage(std::string _msg, uint64_t _idx)
 {
 	std::vector<BYTE> frame;
 
@@ -81,7 +80,7 @@ void HSMSActive::processReceivedMessage(std::string _msg)
 		case HSMS_SESSION::SELECT_REQ:
 		{
 			state = HSMS_STATE::SELECTED;
-			sendResponse(HSMS_SESSION::SELECT_RSP, rans);
+			sendResponse(HSMS_SESSION::SELECT_RSP, rans, _idx);
 			break;
 		}
 
@@ -91,11 +90,11 @@ void HSMSActive::processReceivedMessage(std::string _msg)
 			pends.erase(rans);
 			break;
 		}
-			
+
 		case HSMS_SESSION::DESELECT_REQ:
 		{
 			state = HSMS_STATE::CONNECTED;
-			sendResponse(HSMS_SESSION::DESELECT_RSP, rans);
+			sendResponse(HSMS_SESSION::DESELECT_RSP, rans, _idx);
 			break;
 		}
 
@@ -108,7 +107,7 @@ void HSMSActive::processReceivedMessage(std::string _msg)
 
 		case HSMS_SESSION::LINKTEST_REQ:
 		{
-			sendResponse(HSMS_SESSION::LINKTEST_RSP, rans);
+			sendResponse(HSMS_SESSION::LINKTEST_RSP, rans, _idx);
 			break;
 		}
 
@@ -120,7 +119,7 @@ void HSMSActive::processReceivedMessage(std::string _msg)
 
 		default:
 		{
-			sendResponse(HSMS_SESSION::REJECT_REQ, rans);
+			sendResponse(HSMS_SESSION::REJECT_REQ, rans, _idx);
 			break;
 		}
 
