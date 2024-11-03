@@ -45,6 +45,8 @@ bool TCPServer::open()
         return false;
     }
 
+    u_long mode = 0;
+    ioctlsocket(server, FIONBIO, &mode);
     startAcceptThread();
 
     return true;
