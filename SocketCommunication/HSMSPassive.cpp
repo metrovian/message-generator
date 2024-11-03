@@ -30,9 +30,9 @@ bool HSMSPassive::sendRequest(HSMS_SESSION _ses)
 	msg.resize(10);
 
 	msg[5] = static_cast<char>(_ses);
-	msg[6] = static_cast<char>(sbyte >> 6);
-	msg[7] = static_cast<char>((sbyte >> 4) & 0xFF);
-	msg[8] = static_cast<char>((sbyte >> 2) & 0xFF);
+	msg[6] = static_cast<char>(sbyte >> 24);
+	msg[7] = static_cast<char>((sbyte >> 16) & 0xFF);
+	msg[8] = static_cast<char>((sbyte >> 8) & 0xFF);
 	msg[9] = static_cast<char>(sbyte & 0xFF);
 
 	pends.insert(++sbyte);

@@ -4,16 +4,11 @@
 #include "TCPClient.h"
 int main()
 {
-	WSACleanup();
 	HSMSActive t;
 	HSMSPassive s;
-	//TCPServer s;
-	//TCPClient t;
-	//s.open(8082);
-	//s.open();
+	s.open(8082);
 	Sleep(1000);
 	t.connect("127.0.0.1", 8082);
-	//t.connect();
 	
 	while (1)
 	{

@@ -49,9 +49,9 @@ bool HSMSActive::sendResponse(HSMS_SESSION _ses, uint32_t _sbyte)
 	msg.resize(10);
 
 	msg[5] = static_cast<char>(_ses);
-	msg[6] = static_cast<char>(_sbyte >> 6);
-	msg[7] = static_cast<char>((_sbyte >> 4) & 0xFF);
-	msg[8] = static_cast<char>((_sbyte >> 2) & 0xFF);
+	msg[6] = static_cast<char>(_sbyte >> 24);
+	msg[7] = static_cast<char>((_sbyte >> 16) & 0xFF);
+	msg[8] = static_cast<char>((_sbyte >> 8) & 0xFF);
 	msg[9] = static_cast<char>(_sbyte & 0xFF);
 
 	return sendSimpleMessage(msg);
