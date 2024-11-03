@@ -95,6 +95,8 @@ bool TCPClient::startReceiveThread()
 
     std::thread trd = std::thread(func);
     trd.detach();
+
+    return true;
 }
 
 bool TCPClient::stopThread()

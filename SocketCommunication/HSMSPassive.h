@@ -16,12 +16,8 @@ public: /* connection */
 	bool close();
 
 public: /* send */
-	bool sendRequest(HSMS_SESSION _ses);
+	bool sendRequest(HSMS_SESSION _ses, uint64_t _idx);
 	bool sendResponse(HSMS_SESSION _ses, uint32_t _sbyte, uint64_t _idx);
-
-protected: /* thread */
-	bool startLinkTestThread();
-	bool stopThread();
 
 protected: /* virtual */
 	virtual void processReceivedMessage(std::string _msg, uint64_t _idx);

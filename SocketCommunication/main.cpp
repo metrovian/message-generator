@@ -13,7 +13,7 @@ int main()
 	while (1)
 	{
 		Sleep(1000);
-		t.sendRequest(HSMS_SESSION::SELECT_REQ);
+		s.sendRequest(HSMS_SESSION::SELECT_REQ, 0);
 	}
 	return 0;
 }

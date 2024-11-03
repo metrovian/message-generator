@@ -22,7 +22,7 @@ bool HSMSPassive::close()
 	return ret;
 }
 
-bool HSMSPassive::sendRequest(HSMS_SESSION _ses)
+bool HSMSPassive::sendRequest(HSMS_SESSION _ses, uint64_t _idx)
 {
 	if (state == HSMS_STATE::NONE) return false;
 
@@ -35,9 +35,19 @@ bool HSMSPassive::sendRequest(HSMS_SESSION _ses)
 	msg[8] = static_cast<char>((sbyte >> 8) & 0xFF);
 	msg[9] = static_cast<char>(sbyte & 0xFF);
 
-	pends.insert(++sbyte);
+	uint32_t pend = sbyte;
 
-	return sendSimpleMessage(msg);
+	pends.insert(sbyte++);
+	if (!sendSimpleMessage(msg, _idx)) return false;
+
+	auto time = std::chrono::steady_clock::now();
+	while (std::chrono::steady_clock::now() < time + std::chrono::milliseconds(HSMS_T3_TIMEOUT))
+	{
+		if (pends.find(pend) == pends.end()) return true;
+	}
+
+	std::cerr << "[Client " << _idx << "] T3 Reply Timeout > " << HSMS_T3_TIMEOUT << " ms" << std::endl;
+	return false;
 }
 
 bool HSMSPassive::sendResponse(HSMS_SESSION _ses, uint32_t _sbyte, uint64_t _idx)

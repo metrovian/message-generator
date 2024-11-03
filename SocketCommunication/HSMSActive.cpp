@@ -36,9 +36,19 @@ bool HSMSActive::sendRequest(HSMS_SESSION _ses)
 	msg[8] = static_cast<char>((sbyte >> 8) & 0xFF);
 	msg[9] = static_cast<char>(sbyte & 0xFF);
 
-	pends.insert(++sbyte);
+	uint32_t pend = sbyte;
 
-	return sendSimpleMessage(msg);
+	pends.insert(sbyte++);
+	if (!sendSimpleMessage(msg)) return false;
+
+	auto time = std::chrono::steady_clock::now();
+	while (std::chrono::steady_clock::now() < time + std::chrono::milliseconds(HSMS_T3_TIMEOUT))
+	{
+		if (pends.find(pend) == pends.end()) return true;
+	}
+
+	std::cerr << "[Server] T3 Reply Timeout > " << HSMS_T3_TIMEOUT << " ms" << std::endl;
+	return false;
 }
 
 bool HSMSActive::sendResponse(HSMS_SESSION _ses, uint32_t _sbyte)
