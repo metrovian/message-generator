@@ -68,9 +68,9 @@ void HSMSActive::processReceivedMessage(std::string _msg)
 
 	if (frame.size() < 9) return;
 
-	uint32_t rans = static_cast<uint32_t>(frame[6] << 6);
-	rans += static_cast<uint32_t>(frame[7] << 4);
-	rans += static_cast<uint32_t>(frame[8] << 2);
+	uint32_t rans = static_cast<uint32_t>(frame[6] << 24);
+	rans += static_cast<uint32_t>(frame[7] << 16);
+	rans += static_cast<uint32_t>(frame[8] << 8);
 	rans += static_cast<uint32_t>(frame[9]);
 
 	if (frame[2] == 0x00)
