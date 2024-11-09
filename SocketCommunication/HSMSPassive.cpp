@@ -41,12 +41,12 @@ bool HSMSPassive::sendRequest(HSMS_SESSION _ses, uint64_t _idx)
 	if (!sendSimpleMessage(msg, _idx)) return false;
 
 	auto time = std::chrono::steady_clock::now();
-	while (std::chrono::steady_clock::now() < time + std::chrono::milliseconds(HSMS_T3_TIMEOUT))
+	while (std::chrono::steady_clock::now() < time + std::chrono::milliseconds(HSMS_TIMEOUT))
 	{
 		if (pends.find(pend) == pends.end()) return true;
 	}
 
-	std::cerr << "[Client " << _idx << "] T3 Reply Timeout > " << HSMS_T3_TIMEOUT << " ms" << std::endl;
+	std::cerr << "[Client " << _idx << "] Reply Timeout > " << HSMS_TIMEOUT << " ms" << std::endl;
 	return false;
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 constexpr int BUFFER_SIZE = 1024;
-constexpr int HSMS_T3_TIMEOUT = 100;
+constexpr int HSMS_TIMEOUT = 100;
 
 enum class HSMS_STATE
 {
