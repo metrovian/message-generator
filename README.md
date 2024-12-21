@@ -8,6 +8,7 @@ Personal communication software to understand protocols in depth.
 ## Socket Communication ##
 - Transmission control protocol ( TCP )
 - User datagram protocol ( UDP )
+- Hypertext transfer protocol ( HTTP )
 - High-speed SECS message services ( HSMS )
 
 <br/></br>
