@@ -106,15 +106,9 @@ void HSMSPassive::processReceivedMessage(std::string _msg, uint64_t _idx)
 
 		case HSMS_SESSION::DATA:
 		{
-			if (state == HSMS_STATE::SELECTED)
-			{
-				std::cerr << "[Client "<< _idx << "] " << _msg.substr(10, _msg.size() - 10) << std::endl;
-			}
-
-			else
-			{
-				sendResponse(HSMS_SESSION::REJECT_REQ, rans, _idx);
-			}
+			if (state == HSMS_STATE::SELECTED) std::cerr << "[Client "<< _idx << "] " << _msg.substr(10, _msg.size() - 10) << std::endl;
+			else sendResponse(HSMS_SESSION::REJECT_REQ, rans, _idx);
+			break;
 		}
 
 		case HSMS_SESSION::SELECT_REQ:
@@ -154,6 +148,12 @@ void HSMSPassive::processReceivedMessage(std::string _msg, uint64_t _idx)
 		case HSMS_SESSION::LINKTEST_RSP:
 		{
 			pends.erase(rans);
+			break;
+		}
+
+		case HSMS_SESSION::REJECT_REQ:
+		{
+			std::cerr << "[Client " << _idx << "] Rejected" << std::endl;
 			break;
 		}
 
