@@ -168,9 +168,4 @@ void HSMSActive::processReceivedMessage(std::string _msg)
 
 		return;
 	}
-
-	if (frame[5] == 0x00)
-	{
-		return;
-	}
 }

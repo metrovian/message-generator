@@ -167,9 +167,4 @@ void HSMSPassive::processReceivedMessage(std::string _msg, uint64_t _idx)
 
 		return;
 	}
-
-	if (frame[5] == 0x00)
-	{
-		return;
-	}
 }
