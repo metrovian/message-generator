@@ -24,8 +24,11 @@ bool TCPClient::connect()
 
     sockaddr_in addr;
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(8080);
+    addr.sin_port = htons(port);
     inet_pton(AF_INET, ip.c_str(), &addr.sin_addr);
+
+    u_long mode = 0;
+    ioctlsocket(client, FIONBIO, &mode);
 
     if (::connect(client, (sockaddr*)&addr, sizeof(addr)) == SOCKET_ERROR)
     {
@@ -38,10 +41,9 @@ bool TCPClient::connect()
 
     else
     {
-        startReceiveThread();
+        std::cerr << "[Server] Connected" << std::endl;
+        return startReceiveThread();
     }
-
-    return true;
 }
 
 bool TCPClient::disconnect()
@@ -56,7 +58,7 @@ bool TCPClient::disconnect()
 
 bool TCPClient::sendSimpleMessage(std::string _msg)
 {
-    send(client, _msg.c_str(), strlen(_msg.c_str()), 0);
+    send(client, _msg.c_str(), _msg.length(), 0);
     return true;
 }
 
@@ -64,7 +66,7 @@ bool TCPClient::startReceiveThread()
 {
     if (flag) return false;
     flag = true;
-
+    
     auto func = [&]()
         {
             while (flag)
@@ -86,13 +88,15 @@ bool TCPClient::startReceiveThread()
 
                 else
                 {
-                    processReceivedMessage(std::string(msg));
+                    processReceivedMessage(std::string(msg, ret));
                 }
             }
         };
 
     std::thread trd = std::thread(func);
     trd.detach();
+
+    return true;
 }
 
 bool TCPClient::stopThread()

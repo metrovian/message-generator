@@ -6,3 +6,5 @@
 /SocketCommunication/x64/Debug
 /x64/Debug
 /SerialCommunication/x64/Debug
+/x64/Release
+/SocketCommunication/x64/Release
