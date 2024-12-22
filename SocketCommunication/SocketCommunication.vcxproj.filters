@@ -50,6 +50,12 @@
     <ClInclude Include="HSMSPassive.h">
       <Filter>Data Protocol\Transmission Control Protocol\Concrete</Filter>
     </ClInclude>
+    <ClInclude Include="HTTPServer.h">
+      <Filter>Data Protocol\Transmission Control Protocol\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="HTTPClient.h">
+      <Filter>Data Protocol\Transmission Control Protocol\Concrete</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

@@ -129,6 +129,8 @@
   <ItemGroup>
     <ClInclude Include="HSMSActive.h" />
     <ClInclude Include="HSMSPassive.h" />
+    <ClInclude Include="HTTPClient.h" />
+    <ClInclude Include="HTTPServer.h" />
     <ClInclude Include="Predefined.h" />
     <ClInclude Include="TCPClient.h" />
     <ClInclude Include="TCPServer.h" />
