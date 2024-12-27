@@ -10,7 +10,7 @@
 #include <thread>
 #include <iostream>
 
-class TCPClient
+class ClientTCP
 {
 protected: /* socket */
 	SOCKET client;

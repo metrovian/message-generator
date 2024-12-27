@@ -1,29 +1,29 @@
-#include "HSMSActive.h"
+#include "ClientHSMS.h"
 
-bool HSMSActive::connect(std::string _ip, uint16_t _port)
+bool ClientHSMS::connect(std::string _ip, uint16_t _port)
 {
 	if (state != HSMS_STATE::NONE) return false;
 
 	ip = _ip;
 	port = _port;
 
-	bool ret = TCPClient::connect();
+	bool ret = ClientTCP::connect();
 
 	if (ret) state = HSMS_STATE::CONNECTED;
 	return ret;
 }
 
-bool HSMSActive::disconnect()
+bool ClientHSMS::disconnect()
 {
 	if (state == HSMS_STATE::NONE) return false;
 
-	bool ret = TCPClient::disconnect();
+	bool ret = ClientTCP::disconnect();
 
 	if (ret) state = HSMS_STATE::NONE;
 	return ret;
 }
 
-bool HSMSActive::sendRequest(HSMS_SESSION _ses)
+bool ClientHSMS::sendRequest(HSMS_SESSION _ses)
 {
 	if (state == HSMS_STATE::NONE) return false;
 
@@ -51,7 +51,7 @@ bool HSMSActive::sendRequest(HSMS_SESSION _ses)
 	return false;
 }
 
-bool HSMSActive::sendResponse(HSMS_SESSION _ses, uint32_t _sbyte)
+bool ClientHSMS::sendResponse(HSMS_SESSION _ses, uint32_t _sbyte)
 {
 	if (state == HSMS_STATE::NONE) return false;
 
@@ -67,7 +67,7 @@ bool HSMSActive::sendResponse(HSMS_SESSION _ses, uint32_t _sbyte)
 	return sendSimpleMessage(msg);
 }
 
-bool HSMSActive::sendData(std::string _msg)
+bool ClientHSMS::sendData(std::string _msg)
 {
 	if (state != HSMS_STATE::SELECTED) return false;
 
@@ -84,7 +84,7 @@ bool HSMSActive::sendData(std::string _msg)
 	return true;
 }
 
-void HSMSActive::processReceivedMessage(std::string _msg)
+void ClientHSMS::processReceivedMessage(std::string _msg)
 {
 	std::vector<BYTE> frame;
 

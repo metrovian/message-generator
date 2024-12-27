@@ -1,7 +1,7 @@
-#include "TCPServer.h"
+#include "ServerTCP.h"
 #include "Predefined.h"
 
-bool TCPServer::open()
+bool ServerTCP::open()
 {
     WSADATA wsaData;
     int ret = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -52,7 +52,7 @@ bool TCPServer::open()
     return true;
 }
 
-bool TCPServer::close()
+bool ServerTCP::close()
 {
     stopThread();
 
@@ -68,7 +68,7 @@ bool TCPServer::close()
     return true;
 }
 
-bool TCPServer::sendSimpleMessage(std::string _msg, uint64_t _idx)
+bool ServerTCP::sendSimpleMessage(std::string _msg, uint64_t _idx)
 {
     if (_idx > client.size()) return false;
 
@@ -76,7 +76,7 @@ bool TCPServer::sendSimpleMessage(std::string _msg, uint64_t _idx)
     return true;
 }
 
-bool TCPServer::sendSimpleMessage(std::string _msg)
+bool ServerTCP::sendSimpleMessage(std::string _msg)
 {
     for (uint64_t i = 0; i < client.size(); ++i)
     {
@@ -86,7 +86,7 @@ bool TCPServer::sendSimpleMessage(std::string _msg)
     return true;
 }
 
-bool TCPServer::startAcceptThread()
+bool ServerTCP::startAcceptThread()
 {
     if (flag) return false;
     flag = true;
@@ -122,7 +122,7 @@ bool TCPServer::startAcceptThread()
     return true;
 }
 
-bool TCPServer::startReceiveThread(uint64_t _idx)
+bool ServerTCP::startReceiveThread(uint64_t _idx)
 {
     if (_idx > client.size() - 1) return false;
 
@@ -158,13 +158,13 @@ bool TCPServer::startReceiveThread(uint64_t _idx)
     return true;
 }
 
-bool TCPServer::stopThread()
+bool ServerTCP::stopThread()
 {
     flag = false;
     return true;
 }
 
-void TCPServer::processReceivedMessage(std::string _msg, uint64_t _idx)
+void ServerTCP::processReceivedMessage(std::string _msg, uint64_t _idx)
 {
     std::cerr << "[Client " << _idx << "] " << _msg << std::endl;
 }

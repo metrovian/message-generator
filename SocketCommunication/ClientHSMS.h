@@ -1,8 +1,8 @@
 #pragma once
-#include "TCPClient.h"
+#include "ClientTCP.h"
 #include "Predefined.h"
 
-class HSMSActive : public TCPClient
+class ClientHSMS : public ClientTCP
 {
 protected: /* states */
 	HSMS_STATE state = HSMS_STATE::NONE;

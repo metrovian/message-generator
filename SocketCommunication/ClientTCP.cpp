@@ -1,7 +1,7 @@
-#include "TCPClient.h"
+#include "ClientTCP.h"
 #include "Predefined.h"
 
-bool TCPClient::connect()
+bool ClientTCP::connect()
 {
     WSADATA wsaData;
     int ret = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -46,7 +46,7 @@ bool TCPClient::connect()
     }
 }
 
-bool TCPClient::disconnect()
+bool ClientTCP::disconnect()
 {
     stopThread();
 
@@ -56,13 +56,13 @@ bool TCPClient::disconnect()
     return true;
 }
 
-bool TCPClient::sendSimpleMessage(std::string _msg)
+bool ClientTCP::sendSimpleMessage(std::string _msg)
 {
     send(client, _msg.c_str(), _msg.length(), 0);
     return true;
 }
 
-bool TCPClient::startReceiveThread()
+bool ClientTCP::startReceiveThread()
 {
     if (flag) return false;
     flag = true;
@@ -99,13 +99,13 @@ bool TCPClient::startReceiveThread()
     return true;
 }
 
-bool TCPClient::stopThread()
+bool ClientTCP::stopThread()
 {
     flag = false;
     return true;
 }
 
-void TCPClient::processReceivedMessage(std::string _msg)
+void ClientTCP::processReceivedMessage(std::string _msg)
 {
     std::cerr << "[Server] " << _msg << std::endl;
 }

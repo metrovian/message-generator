@@ -10,7 +10,7 @@
 #include <thread>
 #include <iostream>
 
-class TCPServer
+class ServerTCP
 {
 protected: /* socket */
 	SOCKET server;

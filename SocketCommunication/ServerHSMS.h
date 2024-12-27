@@ -1,8 +1,8 @@
 #pragma once
-#include "TCPServer.h"
+#include "ServerTCP.h"
 #include "Predefined.h"
 
-class HSMSPassive : public TCPServer
+class ServerHSMS : public ServerTCP
 {
 protected: /* states */
 	HSMS_STATE state = HSMS_STATE::NONE;

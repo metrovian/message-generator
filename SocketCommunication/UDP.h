@@ -9,7 +9,7 @@
 #include <iostream>
 #include <set>
 
-class UDPHost
+class UDP
 {
 protected: /* socket */
 	SOCKET host;
@@ -18,8 +18,8 @@ protected: /* flag */
 	std::set<uint16_t> flag;
 
 public: /* constructor */
-	UDPHost();
-	~UDPHost();
+	UDP();
+	~UDP();
 
 public: /* send */
 	bool sendSimpleMessage(std::string _msg, std::string _ip, uint16_t _port);

@@ -1,11 +1,11 @@
-#include "HSMSActive.h"
-#include "HSMSPassive.h"
-#include "TCPServer.h"
-#include "TCPClient.h"
+#include "ServerHSMS.h"
+#include "ClientHSMS.h"
+#include "ServerTCP.h"
+#include "ClientTCP.h"
 int main()
 {
-	HSMSActive t;
-	HSMSPassive s;
+	ClientHSMS t;
+	ServerHSMS s;
 	s.open(1235);
 	Sleep(100);
 	t.connect("127.0.0.1", 1235);
