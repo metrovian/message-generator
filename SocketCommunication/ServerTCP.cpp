@@ -8,7 +8,7 @@ bool ServerTCP::open()
 
     if (ret != 0)
     {
-        std::cerr << "[Server] WSAStartup Failed : " << ret << std::endl;
+        std::cerr << "[Server] Startup Failed : " << ret << std::endl;
         return false;
     }
 
@@ -96,13 +96,15 @@ bool ServerTCP::startAcceptThread()
 
     auto func = [&]() 
         {
+            std::cerr << "[Server] Accept Thread Started" << std::endl;
+
             while (flag)
             {
                 client.push_back(accept(server, (sockaddr*)&addr, &size));
 
                 if (client[client.size() - 1] == INVALID_SOCKET) 
                 {
-                    std::cerr << "[Server] Accept Failed: " << WSAGetLastError() << std::endl;
+                    std::cerr << "[Server] Accept Failed : " << WSAGetLastError() << std::endl;
 
                     closesocket(client[client.size() - 1]);
                     client.pop_back();
@@ -114,6 +116,8 @@ bool ServerTCP::startAcceptThread()
                     startReceiveThread(client.size() - 1);
                 }
             }
+
+            std::cerr << "[Server] Accept Thread Terminated" << std::endl;
         };
 
     std::thread trd = std::thread(func);
@@ -128,6 +132,8 @@ bool ServerTCP::startReceiveThread(uint64_t _idx)
 
     auto func = [&]()
         {
+            std::cerr << "[Client " << _idx << "] Receive Thread Started" << std::endl;
+
             while (flag)
             {
                 char msg[BUFFER_SIZE] = { 0, };
@@ -150,6 +156,8 @@ bool ServerTCP::startReceiveThread(uint64_t _idx)
                     processReceivedMessage(std::string(msg, ret), _idx);
                 }
             }
+
+            std::cerr << "[Client " << _idx << "] Receive Thread Terminated" << std::endl;
         };
 
     std::thread trd = std::thread(func);

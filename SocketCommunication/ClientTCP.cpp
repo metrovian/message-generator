@@ -8,7 +8,7 @@ bool ClientTCP::connect()
 
     if (ret != 0) 
     {
-        std::cerr << "[Client] WSAStartup Failed : " << ret << std::endl;
+        std::cerr << "[Client] Startup Failed : " << ret << std::endl;
         return false;
     }
 
@@ -69,6 +69,8 @@ bool ClientTCP::startReceiveThread()
     
     auto func = [&]()
         {
+            std::cerr << "[Server] Receive Thread Started" << std::endl;
+
             while (flag)
             {
                 char msg[BUFFER_SIZE] = { 0, };
@@ -83,7 +85,6 @@ bool ClientTCP::startReceiveThread()
                 else if (ret < 0)
                 {
                     std::cerr << "[Server] Receive Failed : " << WSAGetLastError() << std::endl;
-                    break;
                 }
 
                 else
@@ -91,6 +92,8 @@ bool ClientTCP::startReceiveThread()
                     processReceivedMessage(std::string(msg, ret));
                 }
             }
+
+            std::cerr << "[Server] Receive Thread Terminated" << std::endl;
         };
 
     std::thread trd = std::thread(func);
