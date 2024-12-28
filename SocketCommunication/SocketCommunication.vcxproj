@@ -141,6 +141,7 @@
     <ClCompile Include="ServerHSMS.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ClientTCP.cpp" />
+    <ClCompile Include="ServerHTTP.cpp" />
     <ClCompile Include="ServerTCP.cpp" />
     <ClCompile Include="UDP.cpp" />
   </ItemGroup>
