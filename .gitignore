@@ -8,3 +8,4 @@
 /SerialCommunication/x64/Debug
 /x64/Release
 /SocketCommunication/x64/Release
+*.html
