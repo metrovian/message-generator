@@ -14,6 +14,14 @@ struct HTTP_REQUEST
 	std::unordered_map<std::string, std::string> header;
 };
 
+struct HTTP_RESPONSE
+{
+	std::string version;
+	std::string status;
+	std::string body;
+	std::unordered_map<std::string, std::string> header;
+};
+
 enum class HSMS_STATE
 {
 	NONE,

@@ -51,9 +51,58 @@ bool ServerHTTP::close()
 	return ServerTCP::close();
 }
 
+bool ServerHTTP::sendResponseMessage(HTTP_RESPONSE _msg, uint64_t _idx)
+{
+	std::string rsp = _msg.version + " " + _msg.status + "\r\n";
+
+	for (const auto& head : _msg.header)
+	{
+		rsp += head.first + " : " + head.second + "\r\n";
+	}
+	
+	return sendSimpleMessage(rsp, _idx);
+}
+
+bool ServerHTTP::processReceivedGet(HTTP_REQUEST _msg)
+{
+	return false;
+}
+
+bool ServerHTTP::processReceivedPost(HTTP_REQUEST _msg)
+{
+	return false;
+}
+
+bool ServerHTTP::processReceivedPut(HTTP_REQUEST _msg)
+{
+	return false;
+}
+
+bool ServerHTTP::processReceivedDelete(HTTP_REQUEST _msg)
+{
+	return false;
+}
+
 void ServerHTTP::processReceivedMessage(std::string _msg, uint64_t _idx)
 {
 	HTTP_REQUEST req = parseRequestMessage(_msg);
+
+	if		(req.method == "GET")		processReceivedGet(req);
+	else if (req.method == "POST")		processReceivedPost(req);
+	else if (req.method == "PUT")		processReceivedPut(req);
+	else if (req.method == "DELETE")	processReceivedDelete(req);
+
+	else
+	{
+		HTTP_RESPONSE rsp;
+
+		rsp.version = "HTTP/1.1";
+		rsp.status = "400 Bad Request";
+		rsp.header["Content-Type"] = "text/html; charset=UTF-8";
+		rsp.header["Content-Length"] = "0";
+
+		sendResponseMessage(rsp, _idx);
+	}
 
 	std::cerr << "[Client " << _idx << "] " << "Request : " << req.method << " " << req.url << " " << req.version << std::endl;
 }
