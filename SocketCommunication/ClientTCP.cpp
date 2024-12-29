@@ -41,7 +41,7 @@ bool ClientTCP::connect()
 
     else
     {
-        std::cerr << "[Server] Connected" << std::endl;
+        std::cerr << "[Server] Connected : " << ip << ":" << port << std::endl;
         return startReceiveThread();
     }
 }
