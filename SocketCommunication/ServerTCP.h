@@ -10,6 +10,7 @@
 #include <chrono>
 #include <thread>
 #include <iostream>
+#include <fstream>
 #include <unordered_map>
 
 class ServerTCP

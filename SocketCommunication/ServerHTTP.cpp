@@ -57,28 +57,72 @@ bool ServerHTTP::sendResponseMessage(HTTP_RESPONSE _msg, uint64_t _idx)
 
 	for (const auto& head : _msg.header)
 	{
-		rsp += head.first + " : " + head.second + "\r\n";
+		rsp += head.first + ": " + head.second + "\r\n";
 	}
+
+	rsp += "\r\n";
+	rsp += _msg.body;
 	
 	return sendSimpleMessage(rsp, _idx);
 }
 
-bool ServerHTTP::processReceivedGet(HTTP_REQUEST _msg)
+bool ServerHTTP::processReceivedGet(HTTP_REQUEST _msg, uint64_t _idx)
+{
+	HTTP_RESPONSE rsp;
+
+	if (_msg.url == "/")
+	{
+		std::ifstream file("index.html", std::ios::binary);
+
+		if (file.is_open())
+		{
+			rsp.body = std::string(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
+			
+			rsp.version = "HTTP/1.1";
+			rsp.status = "200 OK";
+			rsp.header["Content-Type"] = "text/html; charset=UTF-8";
+			rsp.header["Content-Length"] = std::to_string(rsp.body.length());
+
+			return sendResponseMessage(rsp, _idx);
+		}
+	}
+
+	else
+	{
+		std::ifstream file(_msg.url.substr(1), std::ios::binary);
+
+		if (file.is_open())
+		{
+			rsp.body = std::string(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
+
+			rsp.version = "HTTP/1.1";
+			rsp.status = "200 OK";
+			rsp.header["Content-Type"] = "text/html; charset=UTF-8";
+			rsp.header["Content-Length"] = std::to_string(rsp.body.length());
+
+			return sendResponseMessage(rsp, _idx);
+		}
+	}
+
+	rsp.version = "HTTP/1.1";
+	rsp.status = "404 Not Found";
+	rsp.header["Content-Type"] = "text/html; charset=UTF-8";
+	rsp.header["Content-Length"] = "0";
+
+	return sendResponseMessage(rsp, _idx);
+}
+
+bool ServerHTTP::processReceivedPost(HTTP_REQUEST _msg, uint64_t _idx)
 {
 	return false;
 }
 
-bool ServerHTTP::processReceivedPost(HTTP_REQUEST _msg)
+bool ServerHTTP::processReceivedPut(HTTP_REQUEST _msg, uint64_t _idx)
 {
 	return false;
 }
 
-bool ServerHTTP::processReceivedPut(HTTP_REQUEST _msg)
-{
-	return false;
-}
-
-bool ServerHTTP::processReceivedDelete(HTTP_REQUEST _msg)
+bool ServerHTTP::processReceivedDelete(HTTP_REQUEST _msg, uint64_t _idx)
 {
 	return false;
 }
@@ -87,10 +131,10 @@ void ServerHTTP::processReceivedMessage(std::string _msg, uint64_t _idx)
 {
 	HTTP_REQUEST req = parseRequestMessage(_msg);
 
-	if		(req.method == "GET")		processReceivedGet(req);
-	else if (req.method == "POST")		processReceivedPost(req);
-	else if (req.method == "PUT")		processReceivedPut(req);
-	else if (req.method == "DELETE")	processReceivedDelete(req);
+	if		(req.method == "GET")		processReceivedGet(req, _idx);
+	else if (req.method == "POST")		processReceivedPost(req, _idx);
+	else if (req.method == "PUT")		processReceivedPut(req, _idx);
+	else if (req.method == "DELETE")	processReceivedDelete(req, _idx);
 
 	else
 	{

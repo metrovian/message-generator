@@ -112,7 +112,10 @@ bool ServerTCP::startAcceptThread()
 
                 else
                 {
-                    std::cerr << "[Client " << client.size() - 1 << "] Connected" << std::endl;
+                    char ip[32]; 
+                    inet_ntop(AF_INET, &addr.sin_addr, ip, INET_ADDRSTRLEN);
+
+                    std::cerr << "[Client " << client.size() - 1 << "] Connected : " << ip << ":" << ntohs(addr.sin_port) << std::endl;
                     startReceiveThread(client.size() - 1);
                 }
             }
