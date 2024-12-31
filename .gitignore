@@ -9,3 +9,4 @@
 /x64/Release
 /SocketCommunication/x64/Release
 *.html
+/SerialCommunication/x64/Release
