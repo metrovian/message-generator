@@ -2,13 +2,13 @@
 #include <string>
 #include <unordered_map>
 
-constexpr int BUFFER_SIZE = 1024;
-constexpr int HSMS_TIMEOUT = 100;
+constexpr int BUFFER_SIZE	= 100000;
+constexpr int HSMS_TIMEOUT	= 100;
 
 struct HTTP_REQUEST
 {
-	std::string url;
 	std::string method;
+	std::string url;
 	std::string version;
 	std::string body;
 	std::unordered_map<std::string, std::string> header;
@@ -17,6 +17,7 @@ struct HTTP_REQUEST
 struct HTTP_RESPONSE
 {
 	std::string version;
+	std::string code;
 	std::string status;
 	std::string body;
 	std::unordered_map<std::string, std::string> header;

@@ -138,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientHSMS.cpp" />
+    <ClCompile Include="ClientHTTP.cpp" />
     <ClCompile Include="ServerHSMS.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ClientTCP.cpp" />

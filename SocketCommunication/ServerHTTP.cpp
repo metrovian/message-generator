@@ -53,7 +53,7 @@ bool ServerHTTP::close()
 
 bool ServerHTTP::sendResponseMessage(HTTP_RESPONSE _msg, uint64_t _idx)
 {
-	std::string rsp = _msg.version + " " + _msg.status + "\r\n";
+	std::string rsp = _msg.version + " " + _msg.code + " " + _msg.status + "\r\n";
 
 	for (const auto& head : _msg.header)
 	{
@@ -79,7 +79,8 @@ bool ServerHTTP::processReceivedGet(HTTP_REQUEST _msg, uint64_t _idx)
 			rsp.body = std::string(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
 			
 			rsp.version = "HTTP/1.1";
-			rsp.status = "200 OK";
+			rsp.code = "200";
+			rsp.status = "OK";
 			rsp.header["Content-Type"] = "text/html; charset=UTF-8";
 			rsp.header["Content-Length"] = std::to_string(rsp.body.length());
 
@@ -96,7 +97,8 @@ bool ServerHTTP::processReceivedGet(HTTP_REQUEST _msg, uint64_t _idx)
 			rsp.body = std::string(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
 
 			rsp.version = "HTTP/1.1";
-			rsp.status = "200 OK";
+			rsp.code = "200";
+			rsp.status = "OK";
 			rsp.header["Content-Type"] = "text/html; charset=UTF-8";
 			rsp.header["Content-Length"] = std::to_string(rsp.body.length());
 
@@ -105,7 +107,8 @@ bool ServerHTTP::processReceivedGet(HTTP_REQUEST _msg, uint64_t _idx)
 	}
 
 	rsp.version = "HTTP/1.1";
-	rsp.status = "404 Not Found";
+	rsp.code = "404";
+	rsp.status = "Not Found";
 	rsp.header["Content-Type"] = "text/html; charset=UTF-8";
 	rsp.header["Content-Length"] = "0";
 
@@ -141,7 +144,8 @@ void ServerHTTP::processReceivedMessage(std::string _msg, uint64_t _idx)
 		HTTP_RESPONSE rsp;
 
 		rsp.version = "HTTP/1.1";
-		rsp.status = "400 Bad Request";
+		rsp.code = "400";
+		rsp.status = "Bad Request";
 		rsp.header["Content-Type"] = "text/html; charset=UTF-8";
 		rsp.header["Content-Length"] = "0";
 

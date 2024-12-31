@@ -4,11 +4,14 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <string>
+#include <sstream>
 #include <vector>
 #include <set>
 #include <chrono>
 #include <thread>
 #include <iostream>
+#include <fstream>
+#include <unordered_map>
 
 class ClientTCP
 {
