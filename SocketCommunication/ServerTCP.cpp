@@ -23,11 +23,24 @@ bool ServerTCP::open()
     }
 
     sockaddr_in addr;
+    sockaddr_in cddr;
+
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = INADDR_ANY;
     addr.sin_port = htons(port);
 
+    int clen = sizeof(cddr);
+
     if (bind(server, (sockaddr*)&addr, sizeof(addr)) == SOCKET_ERROR)
+    {
+        std::cerr << "[Server] Bind Failed : " << WSAGetLastError() << std::endl;
+        closesocket(server);
+        WSACleanup();
+
+        return false;
+    }
+
+    if (getsockname(server, (sockaddr*)&cddr, &clen) == SOCKET_ERROR)
     {
         std::cerr << "[Server] Bind Failed : " << WSAGetLastError() << std::endl;
         closesocket(server);
@@ -41,9 +54,14 @@ bool ServerTCP::open()
         std::cerr << "[Server] Listen Failed : " << WSAGetLastError() << std::endl;
         closesocket(server);
         WSACleanup();
-        
+
         return false;
     }
+
+    char ip[32];
+    inet_ntop(AF_INET, &cddr.sin_addr, ip, INET_ADDRSTRLEN);
+
+    std::cerr << "[Server] Listen Started : " << ip << ":" << ntohs(cddr.sin_port) << std::endl;
 
     u_long mode = 0;
     ioctlsocket(server, FIONBIO, &mode);
