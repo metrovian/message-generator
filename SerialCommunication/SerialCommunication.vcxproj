@@ -127,14 +127,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ModbusRTU.h" />
-    <ClInclude Include="Predefined.h" />
-    <ClInclude Include="UART.h" />
+    <ClInclude Include="include\ModbusRTU.h" />
+    <ClInclude Include="include\Predefined.h" />
+    <ClInclude Include="include\UART.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="ModbusRTU.cpp" />
-    <ClCompile Include="UART.cpp" />
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\ModbusRTU.cpp" />
+    <ClCompile Include="source\UART.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

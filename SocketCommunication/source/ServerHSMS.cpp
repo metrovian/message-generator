@@ -1,29 +1,28 @@
-#include "ClientHSMS.h"
+#include "../include/ServerHSMS.h"
 
-bool ClientHSMS::connect(std::string _ip, uint16_t _port)
+bool ServerHSMS::open(uint16_t _port)
 {
 	if (state != HSMS_STATE::NONE) return false;
 
-	ip = _ip;
 	port = _port;
 
-	bool ret = ClientTCP::connect();
+	bool ret = ServerTCP::open();
 
 	if (ret) state = HSMS_STATE::CONNECTED;
 	return ret;
 }
 
-bool ClientHSMS::disconnect()
+bool ServerHSMS::close()
 {
 	if (state == HSMS_STATE::NONE) return false;
 
-	bool ret = ClientTCP::disconnect();
+	bool ret = ServerTCP::close();
 
 	if (ret) state = HSMS_STATE::NONE;
 	return ret;
 }
 
-bool ClientHSMS::sendRequest(HSMS_SESSION _ses)
+bool ServerHSMS::sendRequest(HSMS_SESSION _ses, uint64_t _idx)
 {
 	if (state == HSMS_STATE::NONE) return false;
 
@@ -39,7 +38,7 @@ bool ClientHSMS::sendRequest(HSMS_SESSION _ses)
 	uint32_t pend = sbyte;
 
 	pends.insert(sbyte++);
-	if (!sendSimpleMessage(msg)) return false;
+	if (!sendSimpleMessage(msg, _idx)) return false;
 
 	auto time = std::chrono::steady_clock::now();
 	while (std::chrono::steady_clock::now() < time + std::chrono::milliseconds(HSMS_TIMEOUT))
@@ -47,11 +46,11 @@ bool ClientHSMS::sendRequest(HSMS_SESSION _ses)
 		if (pends.find(pend) == pends.end()) return true;
 	}
 
-	std::cerr << "[Server] Reply Timeout > " << HSMS_TIMEOUT << " ms" << std::endl;
+	std::cerr << "[Client " << _idx << "] Reply Timeout > " << HSMS_TIMEOUT << " ms" << std::endl;
 	return false;
 }
 
-bool ClientHSMS::sendResponse(HSMS_SESSION _ses, uint32_t _sbyte)
+bool ServerHSMS::sendResponse(HSMS_SESSION _ses, uint32_t _sbyte, uint64_t _idx)
 {
 	if (state == HSMS_STATE::NONE) return false;
 
@@ -64,10 +63,10 @@ bool ClientHSMS::sendResponse(HSMS_SESSION _ses, uint32_t _sbyte)
 	msg[8] = static_cast<char>((_sbyte >> 8) & 0xFF);
 	msg[9] = static_cast<char>(_sbyte & 0xFF);
 
-	return sendSimpleMessage(msg);
+	return sendSimpleMessage(msg, _idx);
 }
 
-bool ClientHSMS::sendData(std::string _msg)
+bool ServerHSMS::sendData(std::string _msg, uint64_t _idx)
 {
 	if (state != HSMS_STATE::SELECTED) return false;
 
@@ -80,11 +79,11 @@ bool ClientHSMS::sendData(std::string _msg)
 	msg[8] = static_cast<char>((sbyte >> 8) & 0xFF);
 	msg[9] = static_cast<char>(sbyte & 0xFF);
 
-	if (!sendSimpleMessage(msg + _msg)) return false;
+	if (!sendSimpleMessage(msg + _msg, _idx)) return false;
 	return true;
 }
 
-void ClientHSMS::processReceivedMessage(std::string _msg)
+void ServerHSMS::processReceivedMessage(std::string _msg, uint64_t _idx)
 {
 	std::vector<BYTE> frame;
 
@@ -107,15 +106,15 @@ void ClientHSMS::processReceivedMessage(std::string _msg)
 
 		case HSMS_SESSION::DATA:
 		{
-			if (state == HSMS_STATE::SELECTED) std::cerr << "[Server] " << _msg.substr(10, _msg.size() - 10) << std::endl;
-			else sendResponse(HSMS_SESSION::REJECT_REQ, rans);
+			if (state == HSMS_STATE::SELECTED) std::cerr << "[Client "<< _idx << "] " << _msg.substr(10, _msg.size() - 10) << std::endl;
+			else sendResponse(HSMS_SESSION::REJECT_REQ, rans, _idx);
 			break;
 		}
 
 		case HSMS_SESSION::SELECT_REQ:
 		{
 			state = HSMS_STATE::SELECTED;
-			sendResponse(HSMS_SESSION::SELECT_RSP, rans);
+			sendResponse(HSMS_SESSION::SELECT_RSP, rans, _idx);
 			break;
 		}
 
@@ -125,11 +124,11 @@ void ClientHSMS::processReceivedMessage(std::string _msg)
 			pends.erase(rans);
 			break;
 		}
-			
+
 		case HSMS_SESSION::DESELECT_REQ:
 		{
 			state = HSMS_STATE::CONNECTED;
-			sendResponse(HSMS_SESSION::DESELECT_RSP, rans);
+			sendResponse(HSMS_SESSION::DESELECT_RSP, rans, _idx);
 			break;
 		}
 
@@ -142,7 +141,7 @@ void ClientHSMS::processReceivedMessage(std::string _msg)
 
 		case HSMS_SESSION::LINKTEST_REQ:
 		{
-			sendResponse(HSMS_SESSION::LINKTEST_RSP, rans);
+			sendResponse(HSMS_SESSION::LINKTEST_RSP, rans, _idx);
 			break;
 		}
 
@@ -154,13 +153,13 @@ void ClientHSMS::processReceivedMessage(std::string _msg)
 
 		case HSMS_SESSION::REJECT_REQ:
 		{
-			std::cerr << "[Server] Rejected" << std::endl;
+			std::cerr << "[Client " << _idx << "] Rejected" << std::endl;
 			break;
 		}
 
 		default:
 		{
-			sendResponse(HSMS_SESSION::REJECT_REQ, rans);
+			sendResponse(HSMS_SESSION::REJECT_REQ, rans, _idx);
 			break;
 		}
 
