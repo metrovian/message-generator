@@ -127,24 +127,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ClientHSMS.h" />
-    <ClInclude Include="ServerHSMS.h" />
-    <ClInclude Include="ClientHTTP.h" />
-    <ClInclude Include="ServerHTTP.h" />
-    <ClInclude Include="Predefined.h" />
-    <ClInclude Include="ClientTCP.h" />
-    <ClInclude Include="ServerTCP.h" />
-    <ClInclude Include="UDP.h" />
+    <ClInclude Include="include\ClientHSMS.h" />
+    <ClInclude Include="include\ServerHSMS.h" />
+    <ClInclude Include="include\ClientHTTP.h" />
+    <ClInclude Include="include\ServerHTTP.h" />
+    <ClInclude Include="include\Predefined.h" />
+    <ClInclude Include="include\ClientTCP.h" />
+    <ClInclude Include="include\ServerTCP.h" />
+    <ClInclude Include="include\UDP.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ClientHSMS.cpp" />
-    <ClCompile Include="ClientHTTP.cpp" />
-    <ClCompile Include="ServerHSMS.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="ClientTCP.cpp" />
-    <ClCompile Include="ServerHTTP.cpp" />
-    <ClCompile Include="ServerTCP.cpp" />
-    <ClCompile Include="UDP.cpp" />
+    <ClCompile Include="source\ClientHSMS.cpp" />
+    <ClCompile Include="source\ClientHTTP.cpp" />
+    <ClCompile Include="source\ServerHSMS.cpp" />
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\ClientTCP.cpp" />
+    <ClCompile Include="source\ServerHTTP.cpp" />
+    <ClCompile Include="source\ServerTCP.cpp" />
+    <ClCompile Include="source\UDP.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -22,24 +22,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UART.cpp">
+    <ClCompile Include="source\UART.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ModbusRTU.cpp">
+    <ClCompile Include="source\ModbusRTU.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="UART.h">
+    <ClInclude Include="include\UART.h">
       <Filter>Data Protocol\Universal Asynchronous Receiver Transmitter\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Predefined.h">
+    <ClInclude Include="include\Predefined.h">
       <Filter>Data Predefined</Filter>
     </ClInclude>
-    <ClInclude Include="ModbusRTU.h">
+    <ClInclude Include="include\ModbusRTU.h">
       <Filter>Data Protocol\Universal Asynchronous Receiver Transmitter\Concrete</Filter>
     </ClInclude>
   </ItemGroup>

@@ -32,54 +32,54 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ServerTCP.h">
+    <ClInclude Include="include\ServerTCP.h">
       <Filter>Data Protocol\Transmission Control Protocol\Base</Filter>
     </ClInclude>
-    <ClInclude Include="ClientTCP.h">
+    <ClInclude Include="include\ClientTCP.h">
       <Filter>Data Protocol\Transmission Control Protocol\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Predefined.h">
+    <ClInclude Include="include\Predefined.h">
       <Filter>Data Predefined</Filter>
     </ClInclude>
-    <ClInclude Include="UDP.h">
+    <ClInclude Include="include\UDP.h">
       <Filter>Data Protocol\User Datagram Protocol\Base</Filter>
     </ClInclude>
-    <ClInclude Include="ClientHSMS.h">
+    <ClInclude Include="include\ClientHSMS.h">
       <Filter>Data Protocol\Transmission Control Protocol\Concrete</Filter>
     </ClInclude>
-    <ClInclude Include="ServerHSMS.h">
+    <ClInclude Include="include\ServerHSMS.h">
       <Filter>Data Protocol\Transmission Control Protocol\Concrete</Filter>
     </ClInclude>
-    <ClInclude Include="ClientHTTP.h">
+    <ClInclude Include="include\ClientHTTP.h">
       <Filter>Data Protocol\Transmission Control Protocol\Concrete</Filter>
     </ClInclude>
-    <ClInclude Include="ServerHTTP.h">
+    <ClInclude Include="include\ServerHTTP.h">
       <Filter>Data Protocol\Transmission Control Protocol\Concrete</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ServerTCP.cpp">
+    <ClCompile Include="source\ServerTCP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ClientTCP.cpp">
+    <ClCompile Include="source\ClientTCP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UDP.cpp">
+    <ClCompile Include="source\UDP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ClientHSMS.cpp">
+    <ClCompile Include="source\ClientHSMS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ServerHSMS.cpp">
+    <ClCompile Include="source\ServerHSMS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ServerHTTP.cpp">
+    <ClCompile Include="source\ServerHTTP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ClientHTTP.cpp">
+    <ClCompile Include="source\ClientHTTP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
