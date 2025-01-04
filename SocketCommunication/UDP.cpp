@@ -1,7 +1,7 @@
-#include "UDPHost.h"
+#include "UDP.h"
 #include "Predefined.h"
 
-UDPHost::UDPHost()
+UDP::UDP()
 {
     WSADATA wsaData;
     int ret = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -23,7 +23,7 @@ UDPHost::UDPHost()
     }
 }
 
-UDPHost::~UDPHost()
+UDP::~UDP()
 {
     stopThread();
 
@@ -33,7 +33,7 @@ UDPHost::~UDPHost()
     return;
 }
 
-bool UDPHost::sendSimpleMessage(std::string _msg, std::string _ip, uint16_t _port)
+bool UDP::sendSimpleMessage(std::string _msg, std::string _ip, uint16_t _port)
 {
     sockaddr_in addr;
     addr.sin_family = AF_INET;
@@ -51,7 +51,7 @@ bool UDPHost::sendSimpleMessage(std::string _msg, std::string _ip, uint16_t _por
     return true;
 }
 
-bool UDPHost::startReceiveThread(uint16_t _port)
+bool UDP::startReceiveThread(uint16_t _port)
 {
     if (flag.find(_port) != flag.end()) return false;
     flag.insert(_port);
@@ -98,19 +98,19 @@ bool UDPHost::startReceiveThread(uint16_t _port)
     return true;
 }
 
-bool UDPHost::stopThread(uint16_t _port)
+bool UDP::stopThread(uint16_t _port)
 {
     flag.erase(_port);
     return true;
 }
 
-bool UDPHost::stopThread()
+bool UDP::stopThread()
 {
     flag.clear();
     return true;
 }
 
-void UDPHost::processReceivedMessage(std::string _msg, uint16_t _port)
+void UDP::processReceivedMessage(std::string _msg, uint16_t _port)
 {
     std::cerr << "[Host : " << _port << "] " << _msg << std::endl;
 }

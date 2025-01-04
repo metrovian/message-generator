@@ -1,14 +1,14 @@
-#include "TCPClient.h"
+#include "ClientTCP.h"
 #include "Predefined.h"
 
-bool TCPClient::connect()
+bool ClientTCP::connect()
 {
     WSADATA wsaData;
     int ret = WSAStartup(MAKEWORD(2, 2), &wsaData);
 
     if (ret != 0) 
     {
-        std::cerr << "[Client] WSAStartup Failed : " << ret << std::endl;
+        std::cerr << "[Client] Startup Failed : " << ret << std::endl;
         return false;
     }
 
@@ -41,12 +41,12 @@ bool TCPClient::connect()
 
     else
     {
-        std::cerr << "[Server] Connected" << std::endl;
+        std::cerr << "[Server] Connected : " << ip << ":" << port << std::endl;
         return startReceiveThread();
     }
 }
 
-bool TCPClient::disconnect()
+bool ClientTCP::disconnect()
 {
     stopThread();
 
@@ -56,19 +56,21 @@ bool TCPClient::disconnect()
     return true;
 }
 
-bool TCPClient::sendSimpleMessage(std::string _msg)
+bool ClientTCP::sendSimpleMessage(std::string _msg)
 {
     send(client, _msg.c_str(), _msg.length(), 0);
     return true;
 }
 
-bool TCPClient::startReceiveThread()
+bool ClientTCP::startReceiveThread()
 {
     if (flag) return false;
     flag = true;
     
     auto func = [&]()
         {
+            std::cerr << "[Server] Receive Thread Started" << std::endl;
+
             while (flag)
             {
                 char msg[BUFFER_SIZE] = { 0, };
@@ -83,7 +85,6 @@ bool TCPClient::startReceiveThread()
                 else if (ret < 0)
                 {
                     std::cerr << "[Server] Receive Failed : " << WSAGetLastError() << std::endl;
-                    break;
                 }
 
                 else
@@ -91,6 +92,8 @@ bool TCPClient::startReceiveThread()
                     processReceivedMessage(std::string(msg, ret));
                 }
             }
+
+            std::cerr << "[Server] Receive Thread Terminated" << std::endl;
         };
 
     std::thread trd = std::thread(func);
@@ -99,13 +102,13 @@ bool TCPClient::startReceiveThread()
     return true;
 }
 
-bool TCPClient::stopThread()
+bool ClientTCP::stopThread()
 {
     flag = false;
     return true;
 }
 
-void TCPClient::processReceivedMessage(std::string _msg)
+void ClientTCP::processReceivedMessage(std::string _msg)
 {
     std::cerr << "[Server] " << _msg << std::endl;
 }

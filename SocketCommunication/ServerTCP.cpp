@@ -1,14 +1,14 @@
-#include "TCPServer.h"
+#include "ServerTCP.h"
 #include "Predefined.h"
 
-bool TCPServer::open()
+bool ServerTCP::open()
 {
     WSADATA wsaData;
     int ret = WSAStartup(MAKEWORD(2, 2), &wsaData);
 
     if (ret != 0)
     {
-        std::cerr << "[Server] WSAStartup Failed : " << ret << std::endl;
+        std::cerr << "[Server] Startup Failed : " << ret << std::endl;
         return false;
     }
 
@@ -23,11 +23,24 @@ bool TCPServer::open()
     }
 
     sockaddr_in addr;
+    sockaddr_in cddr;
+
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = INADDR_ANY;
     addr.sin_port = htons(port);
 
+    int clen = sizeof(cddr);
+
     if (bind(server, (sockaddr*)&addr, sizeof(addr)) == SOCKET_ERROR)
+    {
+        std::cerr << "[Server] Bind Failed : " << WSAGetLastError() << std::endl;
+        closesocket(server);
+        WSACleanup();
+
+        return false;
+    }
+
+    if (getsockname(server, (sockaddr*)&cddr, &clen) == SOCKET_ERROR)
     {
         std::cerr << "[Server] Bind Failed : " << WSAGetLastError() << std::endl;
         closesocket(server);
@@ -41,9 +54,14 @@ bool TCPServer::open()
         std::cerr << "[Server] Listen Failed : " << WSAGetLastError() << std::endl;
         closesocket(server);
         WSACleanup();
-        
+
         return false;
     }
+
+    char ip[32];
+    inet_ntop(AF_INET, &cddr.sin_addr, ip, INET_ADDRSTRLEN);
+
+    std::cerr << "[Server] Listen Started : " << ip << ":" << ntohs(cddr.sin_port) << std::endl;
 
     u_long mode = 0;
     ioctlsocket(server, FIONBIO, &mode);
@@ -52,7 +70,7 @@ bool TCPServer::open()
     return true;
 }
 
-bool TCPServer::close()
+bool ServerTCP::close()
 {
     stopThread();
 
@@ -68,7 +86,7 @@ bool TCPServer::close()
     return true;
 }
 
-bool TCPServer::sendSimpleMessage(std::string _msg, uint64_t _idx)
+bool ServerTCP::sendSimpleMessage(std::string _msg, uint64_t _idx)
 {
     if (_idx > client.size()) return false;
 
@@ -76,7 +94,7 @@ bool TCPServer::sendSimpleMessage(std::string _msg, uint64_t _idx)
     return true;
 }
 
-bool TCPServer::sendSimpleMessage(std::string _msg)
+bool ServerTCP::sendSimpleMessage(std::string _msg)
 {
     for (uint64_t i = 0; i < client.size(); ++i)
     {
@@ -86,7 +104,7 @@ bool TCPServer::sendSimpleMessage(std::string _msg)
     return true;
 }
 
-bool TCPServer::startAcceptThread()
+bool ServerTCP::startAcceptThread()
 {
     if (flag) return false;
     flag = true;
@@ -96,13 +114,15 @@ bool TCPServer::startAcceptThread()
 
     auto func = [&]() 
         {
+            std::cerr << "[Server] Accept Thread Started" << std::endl;
+
             while (flag)
             {
                 client.push_back(accept(server, (sockaddr*)&addr, &size));
 
                 if (client[client.size() - 1] == INVALID_SOCKET) 
                 {
-                    std::cerr << "[Server] Accept Failed: " << WSAGetLastError() << std::endl;
+                    std::cerr << "[Server] Accept Failed : " << WSAGetLastError() << std::endl;
 
                     closesocket(client[client.size() - 1]);
                     client.pop_back();
@@ -110,10 +130,15 @@ bool TCPServer::startAcceptThread()
 
                 else
                 {
-                    std::cerr << "[Client " << client.size() - 1 << "] Connected" << std::endl;
+                    char ip[32]; 
+                    inet_ntop(AF_INET, &addr.sin_addr, ip, INET_ADDRSTRLEN);
+
+                    std::cerr << "[Client " << client.size() - 1 << "] Connected : " << ip << ":" << ntohs(addr.sin_port) << std::endl;
                     startReceiveThread(client.size() - 1);
                 }
             }
+
+            std::cerr << "[Server] Accept Thread Terminated" << std::endl;
         };
 
     std::thread trd = std::thread(func);
@@ -122,12 +147,14 @@ bool TCPServer::startAcceptThread()
     return true;
 }
 
-bool TCPServer::startReceiveThread(uint64_t _idx)
+bool ServerTCP::startReceiveThread(uint64_t _idx)
 {
     if (_idx > client.size() - 1) return false;
 
     auto func = [&]()
         {
+            std::cerr << "[Client " << _idx << "] Receive Thread Started" << std::endl;
+
             while (flag)
             {
                 char msg[BUFFER_SIZE] = { 0, };
@@ -150,6 +177,8 @@ bool TCPServer::startReceiveThread(uint64_t _idx)
                     processReceivedMessage(std::string(msg, ret), _idx);
                 }
             }
+
+            std::cerr << "[Client " << _idx << "] Receive Thread Terminated" << std::endl;
         };
 
     std::thread trd = std::thread(func);
@@ -158,13 +187,13 @@ bool TCPServer::startReceiveThread(uint64_t _idx)
     return true;
 }
 
-bool TCPServer::stopThread()
+bool ServerTCP::stopThread()
 {
     flag = false;
     return true;
 }
 
-void TCPServer::processReceivedMessage(std::string _msg, uint64_t _idx)
+void ServerTCP::processReceivedMessage(std::string _msg, uint64_t _idx)
 {
     std::cerr << "[Client " << _idx << "] " << _msg << std::endl;
 }

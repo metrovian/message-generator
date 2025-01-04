@@ -1,28 +1,28 @@
-#include "HSMSPassive.h"
+#include "ServerHSMS.h"
 
-bool HSMSPassive::open(uint16_t _port)
+bool ServerHSMS::open(uint16_t _port)
 {
 	if (state != HSMS_STATE::NONE) return false;
 
 	port = _port;
 
-	bool ret = TCPServer::open();
+	bool ret = ServerTCP::open();
 
 	if (ret) state = HSMS_STATE::CONNECTED;
 	return ret;
 }
 
-bool HSMSPassive::close()
+bool ServerHSMS::close()
 {
 	if (state == HSMS_STATE::NONE) return false;
 
-	bool ret = TCPServer::close();
+	bool ret = ServerTCP::close();
 
 	if (ret) state = HSMS_STATE::NONE;
 	return ret;
 }
 
-bool HSMSPassive::sendRequest(HSMS_SESSION _ses, uint64_t _idx)
+bool ServerHSMS::sendRequest(HSMS_SESSION _ses, uint64_t _idx)
 {
 	if (state == HSMS_STATE::NONE) return false;
 
@@ -50,7 +50,7 @@ bool HSMSPassive::sendRequest(HSMS_SESSION _ses, uint64_t _idx)
 	return false;
 }
 
-bool HSMSPassive::sendResponse(HSMS_SESSION _ses, uint32_t _sbyte, uint64_t _idx)
+bool ServerHSMS::sendResponse(HSMS_SESSION _ses, uint32_t _sbyte, uint64_t _idx)
 {
 	if (state == HSMS_STATE::NONE) return false;
 
@@ -66,7 +66,7 @@ bool HSMSPassive::sendResponse(HSMS_SESSION _ses, uint32_t _sbyte, uint64_t _idx
 	return sendSimpleMessage(msg, _idx);
 }
 
-bool HSMSPassive::sendData(std::string _msg, uint64_t _idx)
+bool ServerHSMS::sendData(std::string _msg, uint64_t _idx)
 {
 	if (state != HSMS_STATE::SELECTED) return false;
 
@@ -83,7 +83,7 @@ bool HSMSPassive::sendData(std::string _msg, uint64_t _idx)
 	return true;
 }
 
-void HSMSPassive::processReceivedMessage(std::string _msg, uint64_t _idx)
+void ServerHSMS::processReceivedMessage(std::string _msg, uint64_t _idx)
 {
 	std::vector<BYTE> frame;
 
