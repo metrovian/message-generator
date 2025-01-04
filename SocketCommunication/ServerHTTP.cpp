@@ -117,7 +117,10 @@ bool ServerHTTP::processReceivedGet(HTTP_REQUEST _msg, uint64_t _idx)
 
 bool ServerHTTP::processReceivedPost(HTTP_REQUEST _msg, uint64_t _idx)
 {
-	std::ofstream ofs(_msg.url.substr(1), std::ios::binary);
+	static uint64_t num = 0;
+
+	std::string url = _msg.url.substr(1) + "/" + std::to_string(num++) + ".html";
+	std::ofstream ofs(url, std::ios::binary);
 
 	if (ofs.is_open())
 	{
