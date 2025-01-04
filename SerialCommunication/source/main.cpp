@@ -1,26 +1,7 @@
 #include "../include/UART.h"
 #include "../include/ModbusRTU.h"
-#include <windows.h>
 
 int main()
 {
-	ModbusRTU com7;
-	com7.open();
-	
-	while (1)
-	{
-		com7.sendRequest({ 0x01, 0x06, 0x00, 0x01, 0x00, 0x03 });
-		Sleep(2500);
-
-		com7.sendRequest({ 0x01, 0x03, 0x00, 0x01, 0x00, 0x01 });
-		Sleep(2500);
-
-		com7.sendRequest({ 0x01, 0x06, 0x00, 0x01, 0x00, 0x05 });
-		Sleep(2500);
-
-		com7.sendRequest({ 0x01, 0x03, 0x00, 0x01, 0x00, 0x01 });
-		Sleep(2500);
-	}
-
 	return 0;
 }

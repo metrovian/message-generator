@@ -3,10 +3,5 @@
 
 int main()
 {
-	ServerHTTP http;
-	http.open();
-	getchar();
-	http.close();
-	getchar();
 	return 0;
 }
