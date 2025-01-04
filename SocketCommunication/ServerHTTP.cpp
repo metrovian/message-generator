@@ -185,7 +185,31 @@ bool ServerHTTP::processReceivedPut(HTTP_REQUEST _msg, uint64_t _idx)
 
 bool ServerHTTP::processReceivedDelete(HTTP_REQUEST _msg, uint64_t _idx)
 {
-	return false;
+	if (std::remove(_msg.url.substr(1).c_str()) == 0)
+	{
+		HTTP_RESPONSE rsp;
+
+		rsp.version = "HTTP/1.1";
+		rsp.code = "200";
+		rsp.status = "OK";
+		rsp.header["Content-Type"] = "text/html; charset=UTF-8";
+		rsp.header["Content-Length"] = "0";
+
+		return sendResponseMessage(rsp, _idx);
+	}
+
+	else
+	{
+		HTTP_RESPONSE rsp;
+
+		rsp.version = "HTTP/1.1";
+		rsp.code = "403";
+		rsp.status = "Forbidden";
+		rsp.header["Content-Type"] = "text/html; charset=UTF-8";
+		rsp.header["Content-Length"] = "0";
+
+		return sendResponseMessage(rsp, _idx);
+	}
 }
 
 void ServerHTTP::processReceivedMessage(std::string _msg, uint64_t _idx)
