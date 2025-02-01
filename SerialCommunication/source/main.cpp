@@ -1,5 +1,5 @@
-#include "../include/UART.h"
-#include "../include/ModbusRTU.h"
+#include "UART.h"
+#include "ModbusRTU.h"
 
 int main()
 {

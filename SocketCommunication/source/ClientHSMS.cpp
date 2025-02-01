@@ -1,4 +1,4 @@
-#include "../include/ClientHSMS.h"
+#include "ClientHSMS.h"
 
 bool ClientHSMS::connect(std::string _ip, uint16_t _port)
 {

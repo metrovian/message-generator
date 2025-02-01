@@ -1,4 +1,4 @@
-#include "../include/ServerHTTP.h"
+#include "ServerHTTP.h"
 
 HTTP_REQUEST ServerHTTP::parseRequestMessage(std::string _msg)
 {
