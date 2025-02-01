@@ -1,5 +1,5 @@
-#include "../include/ServerHTTP.h"
-#include "../include/ClientHTTP.h"
+#include "ServerHTTP.h"
+#include "ClientHTTP.h"
 
 int main()
 {

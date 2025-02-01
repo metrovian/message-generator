@@ -1,5 +1,5 @@
-#include "../include/UART.h"
-#include "../include/Predefined.h"
+#include "UART.h"
+#include "Predefined.h"
 
 bool UART::open()
 {

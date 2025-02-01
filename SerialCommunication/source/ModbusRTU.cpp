@@ -1,4 +1,4 @@
-#include "../include/ModbusRTU.h"
+#include "ModbusRTU.h"
 
 ModbusRTU::ModbusRTU()
 {

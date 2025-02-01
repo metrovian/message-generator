@@ -1,5 +1,5 @@
-#include "../include/ClientTCP.h"
-#include "../include/Predefined.h"
+#include "ClientTCP.h"
+#include "Predefined.h"
 
 bool ClientTCP::connect()
 {

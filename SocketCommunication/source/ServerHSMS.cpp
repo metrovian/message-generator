@@ -1,4 +1,4 @@
-#include "../include/ServerHSMS.h"
+#include "ServerHSMS.h"
 
 bool ServerHSMS::open(uint16_t _port)
 {

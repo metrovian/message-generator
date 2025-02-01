@@ -1,5 +1,5 @@
-#include "../include/ServerTCP.h"
-#include "../include/Predefined.h"
+#include "ServerTCP.h"
+#include "Predefined.h"
 
 bool ServerTCP::open()
 {

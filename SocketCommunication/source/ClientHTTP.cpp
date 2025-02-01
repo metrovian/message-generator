@@ -1,4 +1,4 @@
-#include "../include/ClientHTTP.h"
+#include "ClientHTTP.h"
 
 HTTP_RESPONSE ClientHTTP::parseResponseMessage(std::string _msg)
 {

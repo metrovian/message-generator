@@ -1,5 +1,5 @@
-#include "../include/UDP.h"
-#include "../include/Predefined.h"
+#include "UDP.h"
+#include "Predefined.h"
 
 UDP::UDP()
 {
