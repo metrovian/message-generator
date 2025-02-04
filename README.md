@@ -12,4 +12,4 @@ Personal communication software to understand protocols in depth.
 - High-speed SECS message services ( HSMS )
 
 <br/></br>
-Copyright (c) 2024 Vian Lee [ MIT LICENSE ]
+Copyright (c) 2024 metrovian [ MIT LICENSE ]
