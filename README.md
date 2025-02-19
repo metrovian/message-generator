@@ -8,6 +8,8 @@ Personal communication software to understand protocols in depth.
 ## Socket Communication ##
 - Transmission control protocol ( TCP )
 - User datagram protocol ( UDP )
+- Simple network management protocol ( SNMP )
+- Dynamic host configuration protocol ( DHCP )
 - Hypertext transfer protocol ( HTTP )
 - High-speed SECS message services ( HSMS )
 
