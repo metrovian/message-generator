@@ -139,6 +139,8 @@
     <ClInclude Include="include\UDP.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\ServerDHCP.cpp" />
+    <ClCompile Include="include\ServerDHCP.h" />
     <ClCompile Include="source\ClientHSMS.cpp" />
     <ClCompile Include="source\ClientHTTP.cpp" />
     <ClCompile Include="source\ServerHSMS.cpp" />

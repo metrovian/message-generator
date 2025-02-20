@@ -82,5 +82,11 @@
     <ClCompile Include="source\ClientHTTP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="include\ServerDHCP.h">
+      <Filter>Data Protocol\User Datagram Protocol\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ServerDHCP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
