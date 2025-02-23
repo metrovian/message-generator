@@ -27,7 +27,7 @@ bool ServerHSMS::sendRequest(HSMS_SESSION _ses, uint64_t _idx)
 	if (state == HSMS_STATE::NONE) return false;
 
 	std::string msg;
-	msg.resize(10);
+	msg.resize(HSMS_SIZE);
 
 	msg[5] = static_cast<char>(_ses);
 	msg[6] = static_cast<char>(sbyte >> 24);
@@ -55,7 +55,7 @@ bool ServerHSMS::sendResponse(HSMS_SESSION _ses, uint32_t _sbyte, uint64_t _idx)
 	if (state == HSMS_STATE::NONE) return false;
 
 	std::string msg;
-	msg.resize(10);
+	msg.resize(HSMS_SIZE);
 
 	msg[5] = static_cast<char>(_ses);
 	msg[6] = static_cast<char>(_sbyte >> 24);
@@ -71,7 +71,7 @@ bool ServerHSMS::sendData(std::string _msg, uint64_t _idx)
 	if (state != HSMS_STATE::SELECTED) return false;
 
 	std::string msg;
-	msg.resize(10);
+	msg.resize(HSMS_SIZE);
 
 	msg[5] = static_cast<char>(HSMS_SESSION::DATA);
 	msg[6] = static_cast<char>(sbyte >> 24);

@@ -1,6 +1,6 @@
 #pragma once
 #include "ClientTCP.h"
-#include "Predefined.h"
+#include "FrameHTTP.h"
 
 class ClientHTTP : public ClientTCP
 {

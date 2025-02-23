@@ -30,6 +30,9 @@
     <Filter Include="Data Protocol\User Datagram Protocol\Concrete">
       <UniqueIdentifier>{84547466-6ee6-486e-8c13-1c82bb99499f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Data Frame">
+      <UniqueIdentifier>{9ba31968-5f87-4825-9a27-9e3ae13f6385}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ServerTCP.h">
@@ -56,6 +59,15 @@
     <ClInclude Include="include\ServerHTTP.h">
       <Filter>Data Protocol\Transmission Control Protocol\Concrete</Filter>
     </ClInclude>
+    <ClInclude Include="include\FrameHTTP.h">
+      <Filter>Data Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FrameHSMS.h">
+      <Filter>Data Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FrameDHCP.h">
+      <Filter>Data Frame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -80,6 +92,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\ClientHTTP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\ServerDHCP.h">
+      <Filter>Data Protocol\User Datagram Protocol\Concrete</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ServerDHCP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

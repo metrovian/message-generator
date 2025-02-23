@@ -87,7 +87,7 @@ bool UDP::startReceiveThread(uint16_t _port)
 
                 else
                 {
-                    processReceivedMessage(std::string(msg), _port);
+                    processReceivedMessage(std::string(msg, ret), _port);
                 }
             }
         };
