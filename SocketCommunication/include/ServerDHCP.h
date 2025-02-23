@@ -1,3 +1,4 @@
+#pragma once
 #include "UDP.h"
 #include "FrameDHCP.h"
 
@@ -14,6 +15,10 @@ public: /* constructor */
 
 protected: /* parse */
 	DHCP_FRAME parseReceivedMessage(const uint8_t* _msg);
+
+protected: /* print */
+	void printHardwareAddress(uint64_t _mac);
+	void printHostAddress(uint32_t _ip);
 
 protected: /* address */
 	uint32_t leaseHostAddress(uint64_t _mac);

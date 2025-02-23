@@ -112,5 +112,5 @@ bool UDP::stopThread()
 
 void UDP::processReceivedMessage(std::string _msg, uint16_t _port)
 {
-    std::cerr << "[Host : " << _port << "] " << _msg << std::endl;
+    std::cerr << "[Host " << _port << "] " << _msg << std::endl;
 }

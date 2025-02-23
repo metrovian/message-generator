@@ -76,6 +76,39 @@ DHCP_FRAME ServerDHCP::parseReceivedMessage(const uint8_t* _msg)
 	return ret;
 }
 
+void ServerDHCP::printHardwareAddress(uint64_t _mac)
+{
+	std::cerr << std::uppercase << std::hex;
+
+	std::vector<uint16_t> out(6);
+
+	out[0] = uint16_t(0xFF & (_mac >> 56));
+	out[1] = uint16_t(0xFF & (_mac >> 48));
+	out[2] = uint16_t(0xFF & (_mac >> 40));
+	out[3] = uint16_t(0xFF & (_mac >> 32));
+	out[4] = uint16_t(0xFF & (_mac >> 24));
+	out[5] = uint16_t(0xFF & (_mac >> 16));
+
+	for (uint64_t i = 0; i < 5; ++i)
+	{
+		if (out[i] < 16) std::cerr << '0' << out[i] << ':';
+		else std::cerr << out[i] << ":";
+	}
+
+	if (out[5] < 16) std::cerr << '0' << out[5];
+	else std::cerr << out[5];
+
+	std::cerr << std::dec << std::endl;
+}
+
+void ServerDHCP::printHostAddress(uint32_t _ip)
+{
+	std::cerr << uint16_t(0xFF & (_ip >> 24)) << '.';
+	std::cerr << uint16_t(0xFF & (_ip >> 16)) << '.';
+	std::cerr << uint16_t(0xFF & (_ip >> 8)) << '.';
+	std::cerr << uint16_t(0xFF & (_ip >> 0)) << std::endl;
+}
+
 uint32_t ServerDHCP::leaseHostAddress(uint64_t _mac)
 {
 	auto it1 = std::find_if
@@ -96,7 +129,7 @@ uint32_t ServerDHCP::leaseHostAddress(uint64_t _mac)
 		(
 			band.begin(),
 			band.end(),
-			[](const auto& pair)
+			[&](const auto& pair)
 			{
 				return pair.second == 0;
 			}
@@ -110,6 +143,8 @@ uint32_t ServerDHCP::leaseHostAddress(uint64_t _mac)
 
 uint32_t ServerDHCP::releaseHostAddress(uint64_t _mac)
 {
+	uint32_t ret = 0;
+
 	auto it = std::find_if
 	(
 		band.begin(),
@@ -123,9 +158,10 @@ uint32_t ServerDHCP::releaseHostAddress(uint64_t _mac)
 	if (it != band.end())
 	{
 		band.erase(it);
+		ret = it->first;
 	}
 
-	return 0;
+	return ret;
 }
 
 bool ServerDHCP::insert(std::string _ip)
@@ -171,7 +207,7 @@ void ServerDHCP::processReceivedMessage(std::string _msg, uint16_t _port)
 
 			case DHCP_SESSION::DISCOVER:
 			{
-				std::cerr << "[Host : " << _port << "] Discover" << std::endl;
+				std::cerr << "[Host " << _port << "] Discover : ";
 
 				uint32_t ipv4 = leaseHostAddress(frame.mac1);
 				uint32_t ips = ntohl(inet_addr(ip.c_str()));
@@ -218,12 +254,13 @@ void ServerDHCP::processReceivedMessage(std::string _msg, uint16_t _port)
 				setsockopt(host, SOL_SOCKET, SO_BROADCAST, (char*)&opt, sizeof(opt));
 				sendSimpleMessage(rsp, "255.255.255.255", 68);
 
+				printHardwareAddress(frame.mac1);
 				break;
 			}
 
 			case DHCP_SESSION::REQUEST:
 			{
-				std::cerr << "[Host : " << _port << "] Request" << std::endl;
+				std::cerr << "[Host " << _port << "] Request : ";
 
 				uint32_t ipv4 = leaseHostAddress(frame.mac1);
 				uint32_t ips = ntohl(inet_addr(ip.c_str()));
@@ -278,14 +315,15 @@ void ServerDHCP::processReceivedMessage(std::string _msg, uint16_t _port)
 				setsockopt(host, SOL_SOCKET, SO_BROADCAST, (char*)&opt, sizeof(opt));
 				sendSimpleMessage(rsp, "255.255.255.255", 68);
 
+				printHostAddress(ipv4);
 				break;
 			}
 
 			case DHCP_SESSION::RELEASE:
 			{
-				std::cerr << "[Host : " << _port << "] Release" << std::endl;
+				std::cerr << "[Host " << _port << "] Release : ";
 
-				releaseHostAddress(frame.mac1);
+				printHostAddress(releaseHostAddress(frame.mac1));
 				break;
 			}
 

@@ -140,6 +140,7 @@
     <ClInclude Include="include\UDP.h" />
     <ClInclude Include="include\FrameHSMS.h" />
     <ClInclude Include="include\FrameHTTP.h" />
+    <ClInclude Include="include\ServerSNMP.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ServerDHCP.cpp" />
