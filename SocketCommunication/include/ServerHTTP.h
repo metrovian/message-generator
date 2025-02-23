@@ -1,6 +1,6 @@
 #pragma once
 #include "ServerTCP.h"
-#include "Predefined.h"
+#include "FrameHTTP.h"
 
 class ServerHTTP : public ServerTCP
 {

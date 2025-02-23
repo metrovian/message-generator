@@ -1,6 +1,6 @@
 #pragma once
 #include "ClientTCP.h"
-#include "Predefined.h"
+#include "FrameHSMS.h"
 
 class ClientHSMS : public ClientTCP
 {

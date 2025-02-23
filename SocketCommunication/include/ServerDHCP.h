@@ -1,22 +1,28 @@
 #include "UDP.h"
+#include "FrameDHCP.h"
 
 class ServerDHCP : public UDP
 {
 protected: /* data */
-	std::map<std::string, std::string> band;
+	std::map<uint32_t, uint64_t> band;
+	std::string ip;
+	std::string snet;
 
 public: /* constructor */
-	ServerDHCP();
+	ServerDHCP(std::string _ip, std::string _snet);
 	~ServerDHCP();
 
-protected: /* band */
+protected: /* parse */
+	DHCP_FRAME parseReceivedMessage(const uint8_t* _msg);
+
+protected: /* address */
+	uint32_t leaseHostAddress(uint64_t _mac);
+	uint32_t releaseHostAddress(uint64_t _mac);
+
+public: /* band */
 	bool insert(std::string _ip);
 	bool erase(std::string _ip);
 
-protected: /* address */
-	bool leaseHostAddress(std::string _ip, std::string _mac);
-	bool releaseHostAddress(std::string _ip, std::string _mac);
-	
 protected: /* virtual */
 	virtual void processReceivedMessage(std::string _msg, uint16_t _port);
 };
