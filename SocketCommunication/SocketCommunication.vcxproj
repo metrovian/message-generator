@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\FrameSNMP.h" />
     <ClInclude Include="include\FrameDHCP.h" />
     <ClInclude Include="include\ClientHSMS.h" />
     <ClInclude Include="include\ServerHSMS.h" />
@@ -143,6 +144,7 @@
     <ClInclude Include="include\ServerSNMP.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\ServerSNMP.cpp" />
     <ClCompile Include="source\ServerDHCP.cpp" />
     <ClCompile Include="include\ServerDHCP.h" />
     <ClCompile Include="source\ClientHSMS.cpp" />
