@@ -14,7 +14,7 @@ public: /* connection */
 protected: /* send */
 	bool sendResponseMessage(HTTP_RESPONSE _msg, uint64_t _idx);
 
-protected: /* recv */
+protected: /* receive */
 	bool processReceivedGet(HTTP_REQUEST _msg, uint64_t _idx);
 	bool processReceivedPost(HTTP_REQUEST _msg, uint64_t _idx);
 	bool processReceivedPut(HTTP_REQUEST _msg, uint64_t _idx);

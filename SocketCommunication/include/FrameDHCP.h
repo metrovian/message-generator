@@ -14,7 +14,7 @@ enum class DHCP_SESSION
 
 struct DHCP_FRAME
 {
-	DHCP_SESSION sess = DHCP_SESSION::NONE;
+	DHCP_SESSION ses = DHCP_SESSION::NONE;
 
 	uint8_t op = 0x00;
 	uint8_t htype = 0x00;

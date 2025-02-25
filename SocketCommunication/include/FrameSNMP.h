@@ -11,10 +11,10 @@ enum class SNMP_SESSION
 
 struct SNMP_FRAME
 {
-	uint32_t version = 0x00;
-	uint32_t id;
-	uint32_t ers = 0x00;
-	uint32_t eri = 0x00;
+	int32_t version = 0x00;
+	int32_t id;
+	int32_t ers = 0x00;
+	int32_t eri = 0x00;
 
 	std::string community;
 	std::vector<std::pair<std::string, std::string>> binds;

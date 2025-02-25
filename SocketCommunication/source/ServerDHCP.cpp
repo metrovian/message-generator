@@ -71,7 +71,7 @@ DHCP_FRAME ServerDHCP::parseReceivedMessage(const uint8_t* _msg)
 	ret.mac2 = _msg[42] | (ret.mac2 << 8);
 	ret.mac2 = _msg[43] | (ret.mac2 << 8);
 
-	ret.sess = static_cast<DHCP_SESSION>(_msg[242]);
+	ret.ses = static_cast<DHCP_SESSION>(_msg[242]);
 
 	return ret;
 }
@@ -180,7 +180,7 @@ void ServerDHCP::processReceivedMessage(std::string _msg, uint16_t _port)
 	{
 		DHCP_FRAME frame = parseReceivedMessage(reinterpret_cast<const uint8_t*>(_msg.c_str()));
 
-		if (frame.sess != DHCP_SESSION::NONE)
+		if (frame.ses != DHCP_SESSION::NONE)
 		{
 			std::string rsp(300, 0x00);
 
@@ -202,7 +202,7 @@ void ServerDHCP::processReceivedMessage(std::string _msg, uint16_t _port)
 			rsp[238] = 0x53;
 			rsp[239] = 0x63;
 
-			switch (frame.sess)
+			switch (frame.ses)
 			{
 
 			case DHCP_SESSION::DISCOVER:
