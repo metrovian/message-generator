@@ -21,6 +21,9 @@ UDP::UDP()
 
         return;
     }
+
+    static int opt = 1;
+    setsockopt(host, SOL_SOCKET, SO_REUSEADDR, (char*)&opt, sizeof(opt));
 }
 
 UDP::~UDP()
