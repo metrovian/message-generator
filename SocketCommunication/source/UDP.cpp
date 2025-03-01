@@ -21,9 +21,6 @@ UDP::UDP()
 
         return;
     }
-
-    static int opt = 1;
-    setsockopt(host, SOL_SOCKET, SO_REUSEADDR, (char*)&opt, sizeof(opt));
 }
 
 UDP::~UDP()
@@ -56,11 +53,21 @@ bool UDP::sendSimpleMessage(std::string _msg, std::string _ip, uint16_t _port)
 
 bool UDP::startReceiveThread(uint16_t _port)
 {
-    if (flag.find(_port) != flag.end()) return false;
-    flag.insert(_port);
+    if (ports.find(_port) != ports.end()) return false;
+    ports.insert(_port);
 
     auto func = [&]()
         {
+            SOCKET sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+
+            if (sock == INVALID_SOCKET)
+            {
+                std::cerr << "[Host " << _port << "] " << "Socket Creation Failed : " << WSAGetLastError() << std::endl;
+                WSACleanup();
+
+                return false;
+            }
+
             sockaddr_in addr;
             int size = sizeof(addr);
 
@@ -68,24 +75,24 @@ bool UDP::startReceiveThread(uint16_t _port)
             addr.sin_port = htons(_port);
             addr.sin_addr.s_addr = INADDR_ANY;
 
-            if (bind(host, (sockaddr*)&addr, sizeof(addr)) == SOCKET_ERROR)
+            if (bind(sock, (sockaddr*)&addr, sizeof(addr)) == SOCKET_ERROR)
             {
-                std::cerr << "[Host] Bind Failed : " << WSAGetLastError() << std::endl;
+                std::cerr << "[Host " << _port << "] " << "Bind Failed : " << WSAGetLastError() << std::endl;
 
-                closesocket(host);
+                closesocket(sock);
                 WSACleanup();
 
                 return false;
             }
 
-            while (flag.find(_port) != flag.end())
+            while (ports.find(_port) != ports.end())
             {
                 char msg[BUFFER_SIZE] = { 0, };
-                int ret = recvfrom(host, msg, BUFFER_SIZE, 0, (sockaddr*)&addr, &size);
+                int ret = recvfrom(sock, msg, BUFFER_SIZE, 0, (sockaddr*)&addr, &size);
 
                 if (ret == SOCKET_ERROR) 
                 {
-                    std::cerr << "[Host] Receive Failed : " << WSAGetLastError() << std::endl;
+                    std::cerr << "[Host " << _port << "] " << "Receive Failed : " << WSAGetLastError() << std::endl;
                 }
 
                 else
@@ -103,13 +110,13 @@ bool UDP::startReceiveThread(uint16_t _port)
 
 bool UDP::stopThread(uint16_t _port)
 {
-    flag.erase(_port);
+    ports.erase(_port);
     return true;
 }
 
 bool UDP::stopThread()
 {
-    flag.clear();
+    ports.clear();
     return true;
 }
 

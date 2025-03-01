@@ -21,3 +21,4 @@ public: /* send */
 protected: /* virtual */
 	virtual void processReceivedMessage(std::string _msg, uint16_t _port);
 };
+
