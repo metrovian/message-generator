@@ -22,37 +22,37 @@ UDP::UDP(uint16_t _port)
         return;
     }
 
-    sockaddr_in addr;
-    int size = sizeof(addr);
-
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(_port);
-    addr.sin_addr.s_addr = INADDR_ANY;
-
-    if (bind(host, (sockaddr*)&addr, sizeof(addr)) == SOCKET_ERROR) 
-    {
-        std::cerr << "[Host] Bind Failed : " << WSAGetLastError() << std::endl;
-
-        closesocket(host);
-        WSACleanup();
-
-        return;
-    }
-
-    if (getsockname(host, (sockaddr*)&addr, &size) == SOCKET_ERROR)
-    {
-        std::cerr << "[Host] Name Failed : " << WSAGetLastError() << std::endl;
-
-        closesocket(host);
-        WSACleanup();
-
-        return;
-    }
-
     ports.insert(_port);
 
     auto func = [&](uint16_t _port)
-        {
+        {    
+            sockaddr_in addr;
+            int size = sizeof(addr);
+
+            addr.sin_family = AF_INET;
+            addr.sin_port = htons(_port);
+            addr.sin_addr.s_addr = INADDR_ANY;
+
+            if (bind(host, (sockaddr*)&addr, sizeof(addr)) == SOCKET_ERROR)
+            {
+                std::cerr << "[Host] Bind Failed : " << WSAGetLastError() << std::endl;
+
+                closesocket(host);
+                WSACleanup();
+
+                return false;
+            }
+
+            if (getsockname(host, (sockaddr*)&addr, &size) == SOCKET_ERROR)
+            {
+                std::cerr << "[Host] Name Failed : " << WSAGetLastError() << std::endl;
+
+                closesocket(host);
+                WSACleanup();
+
+                return false;
+            }
+
             while (ports.find(_port) != ports.end())
             {
                 char msg[BUFFER_SIZE] = { 0, };
@@ -75,7 +75,7 @@ UDP::UDP(uint16_t _port)
             return true;
         };
 
-    std::thread trd = std::thread(func, ntohs(addr.sin_port));
+    std::thread trd = std::thread(func, _port);
     trd.detach();
 }
 
