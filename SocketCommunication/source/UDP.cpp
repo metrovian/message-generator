@@ -1,7 +1,7 @@
 #include "UDP.h"
 #include "Predefined.h"
 
-UDP::UDP()
+UDP::UDP(uint16_t _port)
 {
     WSADATA wsaData;
     int ret = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -21,6 +21,62 @@ UDP::UDP()
 
         return;
     }
+
+    sockaddr_in addr;
+    int size = sizeof(addr);
+
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(_port);
+    addr.sin_addr.s_addr = INADDR_ANY;
+
+    if (bind(host, (sockaddr*)&addr, sizeof(addr)) == SOCKET_ERROR) 
+    {
+        std::cerr << "[Host] Bind Failed : " << WSAGetLastError() << std::endl;
+
+        closesocket(host);
+        WSACleanup();
+
+        return;
+    }
+
+    if (getsockname(host, (sockaddr*)&addr, &size) == SOCKET_ERROR)
+    {
+        std::cerr << "[Host] Name Failed : " << WSAGetLastError() << std::endl;
+
+        closesocket(host);
+        WSACleanup();
+
+        return;
+    }
+
+    ports.insert(_port);
+
+    auto func = [&](uint16_t _port)
+        {
+            while (ports.find(_port) != ports.end())
+            {
+                char msg[BUFFER_SIZE] = { 0, };
+                int ret = recvfrom(host, msg, BUFFER_SIZE, 0, (sockaddr*)&addr, &size);
+
+                if (ret == SOCKET_ERROR)
+                {
+                    std::cerr << "[Host " << _port << "] " << "Receive Failed : " << WSAGetLastError() << std::endl;
+                }
+
+                else
+                {
+                    processReceivedMessage(std::string(msg, ret), _port);
+                }
+            }
+
+            closesocket(host);
+            WSACleanup();
+
+            return true;
+        };
+
+    std::thread trd = std::thread(func, ntohs(addr.sin_port));
+    trd.detach();
 }
 
 UDP::~UDP()
@@ -56,7 +112,7 @@ bool UDP::startReceiveThread(uint16_t _port)
     if (ports.find(_port) != ports.end()) return false;
     ports.insert(_port);
 
-    auto func = [&]()
+    auto func = [&](uint16_t _port)
         {
             SOCKET sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
@@ -100,9 +156,14 @@ bool UDP::startReceiveThread(uint16_t _port)
                     processReceivedMessage(std::string(msg, ret), _port);
                 }
             }
+
+            closesocket(sock);
+            WSACleanup();
+
+            return true;
         };
 
-    std::thread trd = std::thread(func);
+    std::thread trd = std::thread(func, _port);
     trd.detach();
 
     return true;

@@ -1,16 +1,13 @@
 #include "ServerDHCP.h"
 
-ServerDHCP::ServerDHCP(std::string _ip, std::string _snet) : UDP()
+ServerDHCP::ServerDHCP(std::string _ip, std::string _snet) : UDP(67)
 {
 	ip = _ip;
 	snet = _snet;
-
-	startReceiveThread(67);
 }
 
 ServerDHCP::~ServerDHCP()
 {
-	stopThread(67);
 }
 
 DHCP_FRAME ServerDHCP::parseReceivedMessage(const uint8_t* _msg)

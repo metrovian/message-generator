@@ -1,6 +1,6 @@
 #include "ServerSNMP.h"
 
-ServerSNMP::ServerSNMP()
+ServerSNMP::ServerSNMP() : UDP(0)
 {
 	startReceiveThread(161);
 	startReceiveThread(162);

@@ -19,7 +19,7 @@ protected: /* ports */
 	std::set<uint16_t> ports;
 
 public: /* constructor */
-	UDP();
+	UDP(uint16_t _port);
 	~UDP();
 
 public: /* send */
