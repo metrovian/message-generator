@@ -139,17 +139,39 @@ void ServerSNMP::processReceivedMessage(std::string _msg, uint16_t _port)
 					ptr += msg[ptr] + 1;
 				};
 
-			read(ret.id);
-			read(ret.ers);
-			read(ret.eri);
-
 			std::cerr << "[Host " << _port << "] ";
 
 			switch (ses)
 			{
 
-			case SNMP_SESSION::GET_RESPONSE: std::cerr << "Response : " << ret.id << std::endl; break;
-			case SNMP_SESSION::TRAP: std::cerr << "Trap : " << ret.id << std::endl; break;
+			case SNMP_SESSION::GET_RESPONSE:
+			{
+				read(ret.id);
+				read(ret.ers);
+				read(ret.eri);
+
+				std::cerr << "Response : " << ret.id << std::endl; 
+				break;
+			}
+
+			case SNMP_SESSION::TRAP:
+			{
+				if (msg[ptr++] != 0x06) break;
+				if (msg[ptr + msg[ptr] + 1] != 0x40) break;
+
+				std::string ip;
+
+				for (uint64_t i = 0; i < 3; ++i)
+				{
+					ip += std::to_string(static_cast<int>(msg[ptr + msg[ptr] + i + 3]));
+					ip += '.';
+				}
+
+				ip += std::to_string(static_cast<int>(msg[ptr + msg[ptr] + 6]));
+
+				std::cerr << "Trap : " << ip << std::endl; 
+				break;
+			}
 
 			}
 		}
