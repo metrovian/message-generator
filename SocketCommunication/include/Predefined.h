@@ -1,3 +1,3 @@
 #pragma once
 
-constexpr int BUFFER_SIZE = 100000;
+constexpr int BUFFER_SIZE = 1000;

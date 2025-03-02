@@ -68,6 +68,12 @@
     <ClInclude Include="include\FrameDHCP.h">
       <Filter>Data Frame</Filter>
     </ClInclude>
+    <ClInclude Include="include\ServerSNMP.h">
+      <Filter>Data Protocol\User Datagram Protocol\Concrete</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FrameSNMP.h">
+      <Filter>Data Frame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\main.cpp">
@@ -98,6 +104,9 @@
       <Filter>Data Protocol\User Datagram Protocol\Concrete</Filter>
     </ClCompile>
     <ClCompile Include="source\ServerDHCP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ServerSNMP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

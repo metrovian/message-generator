@@ -1,12 +1,5 @@
 #pragma once
 
-enum class HSMS_STATE
-{
-	NONE,
-	CONNECTED,
-	SELECTED,
-};
-
 enum class HSMS_SESSION
 {
 	DATA,
@@ -18,6 +11,13 @@ enum class HSMS_SESSION
 	LINKTEST_RSP,
 	REJECT_REQ,
 	SEPARATE_REQ,
+};
+
+enum class HSMS_STATE
+{
+	NONE,
+	CONNECTED,
+	SELECTED,
 };
 
 constexpr int HSMS_TIMEOUT = 100;
