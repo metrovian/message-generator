@@ -53,6 +53,8 @@ UDP::UDP(uint16_t _port)
                 return false;
             }
 
+            uint64_t port = ntohs(addr.sin_port);
+
             while (ports.find(_port) != ports.end())
             {
                 char msg[BUFFER_SIZE] = { 0, };
@@ -60,12 +62,12 @@ UDP::UDP(uint16_t _port)
 
                 if (ret == SOCKET_ERROR)
                 {
-                    std::cerr << "[Host " << _port << "] " << "Receive Failed : " << WSAGetLastError() << std::endl;
+                    std::cerr << "[Host " << port << "] " << "Receive Failed : " << WSAGetLastError() << std::endl;
                 }
 
                 else
                 {
-                    processReceivedMessage(std::string(msg, ret), _port);
+                    processReceivedMessage(std::string(msg, ret), port);
                 }
             }
 

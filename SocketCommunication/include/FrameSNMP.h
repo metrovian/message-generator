@@ -12,7 +12,7 @@ enum class SNMP_SESSION
 struct SNMP_FRAME
 {
 	int32_t version = 0x00;
-	int32_t id;
+	int32_t id = 0x00;
 	int32_t ers = 0x00;
 	int32_t eri = 0x00;
 

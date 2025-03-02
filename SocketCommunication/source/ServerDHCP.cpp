@@ -112,9 +112,9 @@ uint32_t ServerDHCP::leaseHostAddress(uint64_t _mac)
 	(
 		band.begin(), 
 		band.end(),
-		[&](const auto& pair) 
+		[&](const auto& _pair) 
 		{ 
-			return pair.second == _mac; 
+			return _pair.second == _mac; 
 		}
 	);
 
@@ -126,9 +126,9 @@ uint32_t ServerDHCP::leaseHostAddress(uint64_t _mac)
 		(
 			band.begin(),
 			band.end(),
-			[&](const auto& pair)
+			[&](const auto& _pair)
 			{
-				return pair.second == 0;
+				return _pair.second == 0;
 			}
 		);
 
@@ -146,9 +146,9 @@ uint32_t ServerDHCP::releaseHostAddress(uint64_t _mac)
 	(
 		band.begin(),
 		band.end(),
-		[&](const auto& pair)
+		[&](const auto& _pair)
 		{
-			return pair.second == _mac;
+			return _pair.second == _mac;
 		}
 	);
 

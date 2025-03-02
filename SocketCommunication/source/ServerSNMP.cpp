@@ -100,5 +100,58 @@ bool ServerSNMP::sendRequestMessage(std::string _ip, SNMP_SESSION _ses, SNMP_FRA
 
 void ServerSNMP::processReceivedMessage(std::string _msg, uint16_t _port)
 {
-	std::cerr << "[Host " << _port << "] " << _msg << std::endl;
+	SNMP_FRAME ret;
+	SNMP_SESSION ses;
+
+	const uint8_t* msg = reinterpret_cast<const uint8_t*>(_msg.c_str());
+
+	if (msg[0] == 0x30)
+	{
+		if (msg[1] == _msg.size() - 2)
+		{
+			if (msg[2] != 0x02) return;
+			if (msg[4 + msg[3]] != 0x04) return;
+
+			for (uint64_t i = 0; i < msg[3]; ++i)
+			{
+				ret.version = msg[i + 4] | (ret.version << 8);
+			}
+
+			for (uint64_t i = 0; i < msg[5 + msg[3]]; ++i)
+			{
+				ret.community += msg[i + 6 + msg[3]];
+			}
+
+			ses = static_cast<SNMP_SESSION>(msg[6 + msg[3] + msg[5 + msg[3]]]);
+
+			uint64_t ptr = 8 + msg[3] + msg[5 + msg[3]];
+			uint64_t add = 0;
+
+			auto read = [&](int32_t& _val)
+				{
+					if (msg[ptr++] != 0x02) return;
+
+					for (uint64_t i = 0; i < msg[ptr]; ++i)
+					{
+						_val = msg[i + 1 + ptr] | (_val << 8);
+					}
+
+					ptr += msg[ptr] + 1;
+				};
+
+			read(ret.id);
+			read(ret.ers);
+			read(ret.eri);
+
+			std::cerr << "[Host " << _port << "] ";
+
+			switch (ses)
+			{
+
+			case SNMP_SESSION::GET_RESPONSE: std::cerr << "Response : " << ret.id << std::endl; break;
+			case SNMP_SESSION::TRAP: std::cerr << "Trap : " << ret.id << std::endl; break;
+
+			}
+		}
+	}
 }
