@@ -50,12 +50,12 @@ bool ClientHTTP::connect(std::string _ip)
 	ip = _ip;
 	port = 80;
 
-    return ClientTCP::connect();
+	return ClientTCP::connect();
 }
 
 bool ClientHTTP::disconnect()
 {
-    return ClientTCP::disconnect();
+	return ClientTCP::disconnect();
 }
 
 bool ClientHTTP::sendRequestMessage(HTTP_REQUEST _msg)
