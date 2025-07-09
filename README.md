@@ -1,6 +1,3 @@
-# General Communicator #
-Personal communication software to understand protocols in depth.
-<br/></br>
 ## Serial Communication ##
 - Universal asynchronous receiver transmitter ( UART )
 - Modbus remote terminal unit ( RTU )
