@@ -1,6 +1,6 @@
 ## Serial Communication ##
 - Universal asynchronous receiver transmitter ( UART )
-- Modbus remote terminal unit ( Modbus-RTU )
+- Modbus remote terminal unit ( RTU )
 <br/></br>
 ## Socket Communication ##
 - Transmission control protocol ( TCP )
